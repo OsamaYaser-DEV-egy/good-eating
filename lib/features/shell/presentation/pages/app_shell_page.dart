@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:good_eating/features/shell/presentation/cubit/shell_cubit.dart';
+import 'package:good_eating/features/shell/presentation/cubit/shell_tab.dart';
+import 'package:good_eating/features/shell/presentation/widgets/shell_bottom_bar.dart';
+import 'package:good_eating/features/shell/presentation/widgets/shell_placeholder_tab.dart';
+
+/// Root screen: the five tabs behind the custom bottom navigation bar.
+///
+/// An [IndexedStack] keeps every tab alive, so each one preserves its scroll
+/// position and loaded data while another is showing.
+class AppShellPage extends StatelessWidget {
+  const AppShellPage({super.key});
+
+  /// Order must match [ShellTab.values].
+  static const List<Widget> _tabs = [
+    ShellPlaceholderTab(title: 'Home'),
+    ShellPlaceholderTab(title: 'Saved'),
+    ShellPlaceholderTab(title: 'Search'),
+    ShellPlaceholderTab(title: 'Notifications'),
+    ShellPlaceholderTab(title: 'Profile'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBody: true,
+      body: BlocBuilder<ShellCubit, ShellTab>(
+        builder: (context, tab) =>
+            IndexedStack(index: tab.index, children: _tabs),
+      ),
+      bottomNavigationBar: const ShellBottomBar(),
+    );
+  }
+}

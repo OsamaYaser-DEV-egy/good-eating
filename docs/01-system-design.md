@@ -247,7 +247,7 @@ final class DataFailure<T> extends DataState<T> { final Failure failure; }
 | `MealDetailsCubit` | `DataState<MealDetail>` | lookup.php for one id |
 | `SearchCubit` | sealed `SearchState`: Idle / Loading / Results / Empty / Error | debounced search.php |
 | `FavoritesCubit` | `DataState<List<MealSummary>>` | local storage, exposes `toggle(meal)` and `isFavorite(id)` |
-| `ShellCubit` | `int` | the selected bottom-nav tab |
+| `ShellCubit` | `ShellTab` enum | the selected shell tab (home, saved, search, notifications, profile) |
 | `OnboardingCubit` | `bool` | first-run flag |
 
 Rules:
@@ -314,9 +314,9 @@ centre button's action becomes **Search**, since TheMealDB cannot create recipes
 
 Built by hand (no package) so it matches exactly:
 
-- `AppBottomNavBar` uses a `CustomPainter` to draw the bar path with a quadratic-bezier notch and a soft shadow.
+- `AppBottomNavBar` uses a `CustomPainter` that reproduces the exact bezier path exported from Figma (notch 109.75 wide, 41 deep, centred) plus its `#6C6C6C` 8 % drop shadow. The bar stretches to any width while the notch keeps its size.
 - Items animate colour and a 1.1× scale pop on selection (`AnimatedScale` + `AnimatedDefaultTextStyle`).
-- The centre action button is a `Material` circle with an `InkWell` ripple and a rotate-in icon.
+- The centre action button is a `Material` circle with an `InkWell` ripple and a white search glyph, since its action is Search.
 - Safe-area aware; the bar never overlaps the home indicator.
 
 ---
