@@ -99,10 +99,11 @@ void main() {
       }
     });
 
-    test('every creator has an avatar asset', () {
+    test('every creator has an avatar asset and a location', () {
       for (final creator in UiPlaceholders.allCreators) {
         expect(creator.avatarAsset, startsWith('assets/avatars/'));
         expect(creator.avatarAsset, endsWith('.png'));
+        expect(creator.location, contains(', '));
       }
     });
 

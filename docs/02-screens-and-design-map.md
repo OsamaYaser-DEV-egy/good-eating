@@ -106,13 +106,16 @@ The design has no frame for this screen, so it is assembled from existing pieces
 - Opened from "See all" on Trending (categories[1]), Recent (categories[2]) and the Popular category header (the selected chip). A pushed route above the shell, so there is no bottom bar.
 
 ### 5.3 Meal details — `MealDetailsPage` (`131:561`)
-- Hero image continuing from whichever card was tapped; back button; **heart** in the app bar.
-- Name (`h4Bold`), rating + review count, creator row with Follow button.
-- `strArea` and `strCategory` as chips.
-- **Ingredients** — the design's grey rounded rows: real ingredient thumbnail, name, measure, live count in the header.
-- **Instructions** — numbered steps parsed from `strInstructions` (added; not in the design).
-- **Watch on YouTube** primary button via `url_launcher`, hidden when `strYoutube` is blank.
-- Shimmer detail skeleton; error + retry.
+Built from the mockup frame, measured in Figma: `ScreenHeader` (back arrow, title), a 335×200 photo, rating row, creator row, then the sections.
+- The photo is the landing spot of a **Hero** from whichever card was tapped. Tags are scoped per place (`trending`, `popular`, `recent`, `grid`), because the same meal often appears in two carousels at once and duplicate tags break navigation.
+- The name and photo arrive with the tap, and the rating, creator and Follow button are derived from the id, so **everything above the ingredients shows immediately**; only the lower part shows a skeleton.
+- Header right: a **heart** (exam §5.2), shown but not yet responding until Stage 5. The design's "more" icon is not drawn, because it has nothing behind it.
+- `strArea` and `strCategory` appear as two pills between the creator row and the ingredients (the design has no slot for them; this placement avoids shifting the photo when they load). A blank one is left out.
+- **Ingredients**: the design's 76 px grey rows with a 52 px white icon box. The icon is the real ingredient picture from TheMealDB's image CDN, not the design's emoji. The count reads "5 items" / "1 item".
+- **Instructions**: numbered steps from `strInstructions` (added; the design stops at ingredients), with the same section style.
+- **Video**: the play button on the photo and a **Watch on YouTube** button both open the link through `LinkLauncher` (`url_launcher`). Both are hidden when the recipe has no video, so the screen never promises one it cannot deliver. Only `http` and `https` links are opened, since the value comes from the API. If nothing can open it, a snackbar says so.
+- The creator's location ("Bali, Indonesia") and the Follow button are placeholders (see `UiPlaceholders`); Follow has no account behind it, so it does nothing.
+- Error: the header and photo stay and the lower part shows the failure with **Try again**.
 
 ### 5.4 Search — `SearchPage` (`139:3178` + `131:482`)
 - The design's field as a real `TextField`, autofocused, with a clear button.

@@ -14,9 +14,18 @@ import 'package:good_eating/features/meals/domain/entities/meal_summary.dart';
 ///
 /// The creator is a placeholder (see `UiPlaceholders`).
 class MealRecentCard extends StatelessWidget {
-  const MealRecentCard({required this.meal, this.onTap, super.key});
+  const MealRecentCard({
+    required this.meal,
+    required this.heroTag,
+    this.onTap,
+    super.key,
+  });
 
   final MealSummary meal;
+
+  /// Tag of the photo's `Hero`; the details screen must be opened with the
+  /// same one.
+  final String heroTag;
   final VoidCallback? onTap;
 
   static const double width = 124;
@@ -42,11 +51,14 @@ class MealRecentCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: AppRadii.mdAll,
-                child: SizedBox.square(
-                  dimension: width,
-                  child: AppNetworkImage(url: meal.thumbUrl),
+              Hero(
+                tag: heroTag,
+                child: ClipRRect(
+                  borderRadius: AppRadii.mdAll,
+                  child: SizedBox.square(
+                    dimension: width,
+                    child: AppNetworkImage(url: meal.thumbUrl),
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),

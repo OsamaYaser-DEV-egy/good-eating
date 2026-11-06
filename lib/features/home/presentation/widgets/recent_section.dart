@@ -10,6 +10,8 @@ import 'package:good_eating/features/category_meals/presentation/category_meals_
 import 'package:good_eating/features/home/presentation/cubit/home_feed.dart';
 import 'package:good_eating/features/home/presentation/cubit/home_feed_cubit.dart';
 import 'package:good_eating/features/home/presentation/widgets/home_section.dart';
+import 'package:good_eating/features/meal_details/presentation/meal_details_navigation.dart';
+import 'package:good_eating/features/meals/presentation/hero_tags.dart';
 import 'package:good_eating/features/meals/presentation/widgets/meal_recent_card.dart';
 
 /// "Recent recipe": compact photo cards.
@@ -50,8 +52,19 @@ class RecentSection extends StatelessWidget {
               return HorizontalList(
                 height: MealRecentCard.height,
                 itemCount: meals.length,
-                itemBuilder: (context, index) =>
-                    MealRecentCard(meal: meals[index]).entrance(index: index),
+                itemBuilder: (context, index) {
+                  final meal = meals[index];
+                  final heroTag = HeroTags.meal(
+                    scope: HeroTags.recent,
+                    mealId: meal.id,
+                  );
+                  return MealRecentCard(
+                    meal: meal,
+                    heroTag: heroTag,
+                    onTap: () =>
+                        openMealDetails(context, meal: meal, heroTag: heroTag),
+                  ).entrance(index: index);
+                },
               );
             },
           ),

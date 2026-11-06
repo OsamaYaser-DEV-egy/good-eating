@@ -14,6 +14,8 @@ abstract final class AppAssets {
   static const String playButton = '$_icons/play_button.svg';
   static const String star = '$_icons/star.svg';
   static const String more = '$_icons/more.svg';
+  static const String starRating = '$_icons/star_rating.svg';
+  static const String location = '$_icons/location.svg';
 
   static const String avatarTroyanSmith = '$_avatars/troyan_smith.png';
   static const String avatarJamesWolden = '$_avatars/james_wolden.png';

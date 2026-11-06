@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:good_eating/core/error/failure.dart';
 import 'package:good_eating/core/utils/result.dart';
+import 'package:good_eating/features/meals/domain/entities/ingredient.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_category.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_detail.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_summary.dart';
@@ -23,6 +23,39 @@ MealSummary fakeMeal(String category, int number) => MealSummary(
   name: '$category dish $number',
   thumbUrl: '',
 );
+
+/// A full recipe for the meal [id] made by [fakeMeal] (`<category>-<number>`).
+///
+/// Every field can be overridden, so a test can ask for a recipe with no
+/// video, no ingredients, a missing area and so on.
+MealDetail fakeMealDetail(
+  String id, {
+  String? area = 'Italian',
+  String? category,
+  String instructions = 'Mix everything.\r\nBake it.\r\nServe warm.',
+  List<Ingredient>? ingredients,
+  String? youtubeUrl = 'https://www.youtube.com/watch?v=abc123',
+}) {
+  final parts = id.split('-');
+  final categoryName = category ?? parts.first;
+  final number = parts.length > 1 ? parts.last : '0';
+  return MealDetail(
+    id: id,
+    name: '$categoryName dish $number',
+    category: categoryName,
+    area: area ?? '',
+    instructions: instructions,
+    thumbUrl: '',
+    youtubeUrl: youtubeUrl,
+    ingredients:
+        ingredients ??
+        const [
+          Ingredient(name: 'flour', measure: '200g'),
+          Ingredient(name: 'eggs', measure: '2'),
+          Ingredient(name: 'milk', measure: ''),
+        ],
+  );
+}
 
 /// An in-memory [MealRepository] a test can script and inspect.
 final class FakeMealRepository implements MealRepository {
@@ -50,6 +83,18 @@ final class FakeMealRepository implements MealRepository {
   final List<String> requestedCategories = [];
 
   int categoriesCalls = 0;
+
+  /// What [getMealDetails] returns for a given id. Unlisted ids get
+  /// [fakeMealDetail].
+  final Map<String, Result<MealDetail>> detailsOverrides = {};
+  final Map<String, Completer<Result<MealDetail>>> _heldDetails = {};
+
+  /// Every id requested from [getMealDetails], in order.
+  final List<String> requestedDetails = [];
+
+  /// Makes [getMealDetails] for [id] wait for the completer.
+  Completer<Result<MealDetail>> holdDetails(String id) =>
+      _heldDetails[id] = Completer();
 
   /// Makes every [getCategories] call wait until the returned completer is
   /// completed, so a test can look at the loading state. Several cubits ask
@@ -86,8 +131,12 @@ final class FakeMealRepository implements MealRepository {
   }
 
   @override
-  Future<Result<MealDetail>> getMealDetails(String id) =>
-      Future.value(const Failed(NotFoundFailure()));
+  Future<Result<MealDetail>> getMealDetails(String id) {
+    requestedDetails.add(id);
+    final held = _heldDetails.remove(id);
+    if (held != null) return held.future;
+    return Future.value(detailsOverrides[id] ?? Success(fakeMealDetail(id)));
+  }
 
   @override
   Future<Result<List<MealSummary>>> searchMeals(String query) =>

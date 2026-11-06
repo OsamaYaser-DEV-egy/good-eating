@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Debug and profile builds get this from their own manifests; a release
+         build needs it here or every request to TheMealDB fails. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="good_eating"
         android:name="${applicationName}"
@@ -40,6 +43,11 @@
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <!-- Lets url_launcher open recipe videos in the YouTube app or a browser. -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
         </intent>
     </queries>
 </manifest>

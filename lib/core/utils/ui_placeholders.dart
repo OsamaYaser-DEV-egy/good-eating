@@ -4,13 +4,20 @@ import 'package:good_eating/core/constants/app_assets.dart';
 
 /// A fictional recipe author shown in place of data the API does not have.
 final class PlaceholderCreator extends Equatable {
-  const PlaceholderCreator({required this.name, required this.avatarAsset});
+  const PlaceholderCreator({
+    required this.name,
+    required this.avatarAsset,
+    required this.location,
+  });
 
   final String name;
   final String avatarAsset;
 
+  /// Where the creator is based, for example "Bali, Indonesia".
+  final String location;
+
   @override
-  List<Object?> get props => [name, avatarAsset];
+  List<Object?> get props => [name, avatarAsset, location];
 }
 
 /// Values the design shows but TheMealDB does not return: rating, review
@@ -25,18 +32,22 @@ abstract final class UiPlaceholders {
     PlaceholderCreator(
       name: 'Troyan Smith',
       avatarAsset: AppAssets.avatarTroyanSmith,
+      location: 'Bali, Indonesia',
     ),
     PlaceholderCreator(
       name: 'James Wolden',
       avatarAsset: AppAssets.avatarJamesWolden,
+      location: 'Lyon, France',
     ),
     PlaceholderCreator(
       name: 'Niki Samantha',
       avatarAsset: AppAssets.avatarNikiSamantha,
+      location: 'Kyoto, Japan',
     ),
     PlaceholderCreator(
       name: 'Roberta Anny',
       avatarAsset: AppAssets.avatarRobertaAnny,
+      location: 'Tuscany, Italy',
     ),
   ];
 

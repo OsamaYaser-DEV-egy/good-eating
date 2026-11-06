@@ -21,6 +21,7 @@ import 'package:good_eating/features/meals/presentation/widgets/meal_overlay_bad
 class MealTrendingCard extends StatelessWidget {
   const MealTrendingCard({
     required this.meal,
+    required this.heroTag,
     this.onTap,
     this.isFavorite = false,
     this.onFavoriteToggle,
@@ -28,6 +29,10 @@ class MealTrendingCard extends StatelessWidget {
   });
 
   final MealSummary meal;
+
+  /// Tag of the photo's `Hero`; the details screen must be opened with the
+  /// same one.
+  final String heroTag;
   final VoidCallback? onTap;
   final bool isFavorite;
   final VoidCallback? onFavoriteToggle;
@@ -57,9 +62,12 @@ class MealTrendingCard extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    ClipRRect(
-                      borderRadius: AppRadii.lgAll,
-                      child: AppNetworkImage(url: meal.thumbUrl),
+                    Hero(
+                      tag: heroTag,
+                      child: ClipRRect(
+                        borderRadius: AppRadii.lgAll,
+                        child: AppNetworkImage(url: meal.thumbUrl),
+                      ),
                     ),
                     Center(
                       child: ExcludeSemantics(

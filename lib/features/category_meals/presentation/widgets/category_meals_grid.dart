@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:good_eating/core/theme/app_spacing.dart';
 import 'package:good_eating/core/widgets/app_shimmer.dart';
 import 'package:good_eating/core/widgets/entrance_animation.dart';
+import 'package:good_eating/features/meal_details/presentation/meal_details_navigation.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_summary.dart';
+import 'package:good_eating/features/meals/presentation/hero_tags.dart';
 import 'package:good_eating/features/meals/presentation/widgets/meal_popular_card.dart';
 
 /// Two columns, 16 px apart, with every cell as tall as a popular card.
@@ -42,9 +43,12 @@ class CategoryMealsGrid extends StatelessWidget {
       itemCount: meals.length,
       itemBuilder: (context, index) {
         final meal = meals[index];
+        final heroTag = HeroTags.meal(scope: HeroTags.grid, mealId: meal.id);
         return MealPopularCard(
           key: ValueKey(meal.id),
           meal: meal,
+          heroTag: heroTag,
+          onTap: () => openMealDetails(context, meal: meal, heroTag: heroTag),
         ).entrance(index: index < _staggeredItems ? index : 0);
       },
     );

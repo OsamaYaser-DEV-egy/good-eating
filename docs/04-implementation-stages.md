@@ -87,12 +87,14 @@ error view and Try again recovers.
 ## Stage 4 — Meal details screen
 
 - `MealDetailsCubit` over `GetMealDetails`.
-- Hero image continuing from the tapped card, back button, **heart toggle in the app bar**.
-- Name, rating + reviews, creator row with Follow, `strArea` and `strCategory` chips.
+- Hero image continuing from the tapped card (per-place hero tags), back button, **heart in the header** (not yet responding; Stage 5 wires it).
+- Name, rating + reviews, creator row with Follow, `strArea` and `strCategory` pills.
 - Ingredients section — design's grey rows, real ingredient thumbnails, live count.
 - Instructions section as numbered steps.
-- **Watch on YouTube** via `url_launcher`, hidden when `strYoutube` is blank.
-- Detail shimmer skeleton, error + retry.
+- **Watch on YouTube** and a play button on the photo, via `LinkLauncher` / `url_launcher`; both hidden when `strYoutube` is blank.
+- Detail shimmer skeleton for the lower part, error + retry.
+- Card taps on Home and the category grid now open this screen.
+- Android: `INTERNET` added to the main manifest (release builds had none), and an `https` query for `url_launcher`.
 
 **Figma needed:** `?node-id=131-561`.
 **Done when:** tapping any meal anywhere animates in, every field renders, the YouTube button opens

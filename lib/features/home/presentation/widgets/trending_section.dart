@@ -10,6 +10,8 @@ import 'package:good_eating/features/category_meals/presentation/category_meals_
 import 'package:good_eating/features/home/presentation/cubit/home_feed.dart';
 import 'package:good_eating/features/home/presentation/cubit/home_feed_cubit.dart';
 import 'package:good_eating/features/home/presentation/widgets/home_section.dart';
+import 'package:good_eating/features/meal_details/presentation/meal_details_navigation.dart';
+import 'package:good_eating/features/meals/presentation/hero_tags.dart';
 import 'package:good_eating/features/meals/presentation/widgets/meal_trending_card.dart';
 
 /// "Trending now": large cards with a play button, rating and creator.
@@ -50,8 +52,19 @@ class TrendingSection extends StatelessWidget {
               return HorizontalList(
                 height: MealTrendingCard.height,
                 itemCount: meals.length,
-                itemBuilder: (context, index) =>
-                    MealTrendingCard(meal: meals[index]).entrance(index: index),
+                itemBuilder: (context, index) {
+                  final meal = meals[index];
+                  final heroTag = HeroTags.meal(
+                    scope: HeroTags.trending,
+                    mealId: meal.id,
+                  );
+                  return MealTrendingCard(
+                    meal: meal,
+                    heroTag: heroTag,
+                    onTap: () =>
+                        openMealDetails(context, meal: meal, heroTag: heroTag),
+                  ).entrance(index: index);
+                },
               );
             },
           ),

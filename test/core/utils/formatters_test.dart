@@ -43,4 +43,27 @@ void main() {
     expect(Formatters.cookTime(10), '10 Mins');
     expect(Formatters.cookTime(45), '45 Mins');
   });
+
+  group('Formatters.itemCount', () {
+    test(
+      'is singular for one',
+      () => expect(Formatters.itemCount(1), '1 item'),
+    );
+
+    test('is plural for everything else, including zero', () {
+      expect(Formatters.itemCount(0), '0 items');
+      expect(Formatters.itemCount(5), '5 items');
+      expect(Formatters.itemCount(20), '20 items');
+    });
+  });
+
+  group('Formatters.reviewCount', () {
+    test('wraps the count in brackets', () {
+      expect(Formatters.reviewCount(300), '(300 Reviews)');
+    });
+
+    test('is singular for one', () {
+      expect(Formatters.reviewCount(1), '(1 Review)');
+    });
+  });
 }

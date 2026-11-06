@@ -16,7 +16,9 @@ class ScreenHeader extends StatelessWidget {
 
   final String title;
 
-  /// Shown at the right end of the arrow row, for example a "more" icon.
+  /// Shown at the right end of the arrow row. It should be a 48 px tap
+  /// target; the header shifts it so its glyph, not the tap target, sits on
+  /// the 20 px margin, as the back arrow does on the left.
   final Widget? trailing;
 
   /// The arrow is 24 px, but a tap target should be at least 48.
@@ -40,7 +42,13 @@ class ScreenHeader extends StatelessWidget {
           Row(
             children: [
               const _BackButton(),
-              if (trailing != null) ...[const Spacer(), trailing],
+              if (trailing != null) ...[
+                const Spacer(),
+                Transform.translate(
+                  offset: const Offset((_tapTarget - _arrowSize) / 2, 0),
+                  child: trailing,
+                ),
+              ],
             ],
           ),
           Padding(

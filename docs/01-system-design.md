@@ -82,6 +82,8 @@ lib/
 │  ├─ network/
 │  │  ├─ dio_factory.dart          # configured Dio (timeouts, interceptors)
 │  │  └─ api_client.dart           # get() returning decoded JSON or throwing
+│  ├─ services/
+│  │  └─ link_launcher.dart        # opens http(s) links outside the app (url_launcher)
 │  ├─ state/
 │  │  └─ data_state.dart           # sealed DataState: Initial/Loading/Success/Failure
 │  ├─ usecase/
@@ -247,7 +249,7 @@ final class DataFailure<T> extends DataState<T> { final Failure failure; }
 | `CategoriesCubit` | `DataState<List<MealCategory>>` | categories.php, cached in memory after first success |
 | `CategoryMealsCubit` | `CategoryMealsState` (`selected` + `DataState<List<MealSummary>>`) | the active category and its meals; a chip highlights at once while the meals load, and a slow answer for a category no longer selected is discarded. One instance per screen: Home has one, the grid page will have its own |
 | `HomeFeedCubit` | `DataState<HomeFeed>` | the Trending and Recent carousels (categories 1 and 2) |
-| `MealDetailsCubit` | `DataState<MealDetail>` | lookup.php for one id |
+| `MealDetailsCubit` | `DataState<MealDetail>` | lookup.php for one id; created per screen with the meal id (`getIt<MealDetailsCubit>(param1: id)`) |
 | `SearchCubit` | sealed `SearchState`: Idle / Loading / Results / Empty / Error | debounced search.php |
 | `FavoritesCubit` | `DataState<List<MealSummary>>` | local storage, exposes `toggle(meal)` and `isFavorite(id)` |
 | `ShellCubit` | `ShellTab` enum | the selected shell tab (home, saved, search, notifications, profile) |

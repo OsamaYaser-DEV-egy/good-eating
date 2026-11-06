@@ -2,4 +2,5 @@
 abstract final class AppRoutes {
   static const String shell = '/';
   static const String categoryMeals = '/category-meals';
+  static const String mealDetails = '/meal-details';
 }

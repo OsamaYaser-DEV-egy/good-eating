@@ -11,6 +11,8 @@ import 'package:good_eating/features/category_meals/presentation/cubit/category_
 import 'package:good_eating/features/category_meals/presentation/cubit/category_meals_state.dart';
 import 'package:good_eating/features/category_meals/presentation/widgets/category_tabs.dart';
 import 'package:good_eating/features/home/presentation/widgets/home_section.dart';
+import 'package:good_eating/features/meal_details/presentation/meal_details_navigation.dart';
+import 'package:good_eating/features/meals/presentation/hero_tags.dart';
 import 'package:good_eating/features/meals/presentation/widgets/meal_popular_card.dart';
 
 /// "Popular category": the category tabs and, under them, that category's
@@ -68,10 +70,22 @@ class _CategoryMeals extends StatelessWidget {
           return HorizontalList(
             height: MealPopularCard.height,
             itemCount: shown.length,
-            itemBuilder: (context, index) => SizedBox(
-              width: MealPopularCard.carouselWidth,
-              child: MealPopularCard(meal: shown[index]),
-            ).entrance(index: index),
+            itemBuilder: (context, index) {
+              final meal = shown[index];
+              final heroTag = HeroTags.meal(
+                scope: HeroTags.popular,
+                mealId: meal.id,
+              );
+              return SizedBox(
+                width: MealPopularCard.carouselWidth,
+                child: MealPopularCard(
+                  meal: meal,
+                  heroTag: heroTag,
+                  onTap: () =>
+                      openMealDetails(context, meal: meal, heroTag: heroTag),
+                ),
+              ).entrance(index: index);
+            },
           );
         },
       ),

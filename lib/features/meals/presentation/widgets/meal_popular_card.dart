@@ -22,6 +22,7 @@ import 'package:good_eating/features/meals/domain/entities/meal_summary.dart';
 class MealPopularCard extends StatelessWidget {
   const MealPopularCard({
     required this.meal,
+    required this.heroTag,
     this.onTap,
     this.isFavorite = false,
     this.onFavoriteToggle,
@@ -29,6 +30,10 @@ class MealPopularCard extends StatelessWidget {
   });
 
   final MealSummary meal;
+
+  /// Tag of the dish photo's `Hero`; the details screen must be opened with
+  /// the same one.
+  final String heroTag;
   final VoidCallback? onTap;
   final bool isFavorite;
   final VoidCallback? onFavoriteToggle;
@@ -74,7 +79,12 @@ class MealPopularCard extends StatelessWidget {
                 top: 0,
                 left: 0,
                 right: 0,
-                child: Center(child: _Dish(url: meal.thumbUrl)),
+                child: Center(
+                  child: Hero(
+                    tag: heroTag,
+                    child: _Dish(url: meal.thumbUrl),
+                  ),
+                ),
               ),
               Positioned(
                 top: _titleTop,

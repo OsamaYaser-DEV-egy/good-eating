@@ -3,8 +3,10 @@ import 'package:get_it/get_it.dart';
 
 import 'package:good_eating/core/network/api_client.dart';
 import 'package:good_eating/core/network/dio_factory.dart';
+import 'package:good_eating/core/services/link_launcher.dart';
 import 'package:good_eating/features/category_meals/presentation/cubit/category_meals_cubit.dart';
 import 'package:good_eating/features/home/presentation/cubit/home_feed_cubit.dart';
+import 'package:good_eating/features/meal_details/presentation/cubit/meal_details_cubit.dart';
 import 'package:good_eating/features/meals/data/datasources/meal_remote_data_source.dart';
 import 'package:good_eating/features/meals/data/repositories/meal_repository_impl.dart';
 import 'package:good_eating/features/meals/domain/repositories/meal_repository.dart';
@@ -24,6 +26,7 @@ void configureDependencies() {
     // Core
     ..registerLazySingleton<Dio>(DioFactory.create)
     ..registerLazySingleton<ApiClient>(() => ApiClient(getIt()))
+    ..registerLazySingleton<LinkLauncher>(UrlLauncherLinkLauncher.new)
     // Meals: data
     ..registerLazySingleton<MealRemoteDataSource>(
       () => MealRemoteDataSourceImpl(getIt()),
@@ -45,6 +48,9 @@ void configureDependencies() {
         getCategories: getIt(),
         getMealsByCategory: getIt(),
       ),
+    )
+    ..registerFactoryParam<MealDetailsCubit, String, void>(
+      (mealId, _) => MealDetailsCubit(getMealDetails: getIt(), mealId: mealId),
     )
     ..registerFactory<HomeFeedCubit>(
       () => HomeFeedCubit(getCategories: getIt(), getMealsByCategory: getIt()),

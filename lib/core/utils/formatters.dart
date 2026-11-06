@@ -12,4 +12,11 @@ abstract final class Formatters {
 
   /// `10` becomes `10 Mins`.
   static String cookTime(int minutes) => '$minutes Mins';
+
+  /// `1` becomes `1 item`, anything else `N items`.
+  static String itemCount(int count) => count == 1 ? '1 item' : '$count items';
+
+  /// `300` becomes `(300 Reviews)`.
+  static String reviewCount(int count) =>
+      count == 1 ? '(1 Review)' : '($count Reviews)';
 }
