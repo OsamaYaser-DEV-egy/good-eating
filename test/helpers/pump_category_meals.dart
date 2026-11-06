@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:good_eating/app/di/injector.dart';
 import 'package:good_eating/core/theme/app_theme.dart';
 import 'package:good_eating/features/category_meals/presentation/pages/category_meals_page.dart';
-import 'package:good_eating/features/meals/presentation/cubit/categories_cubit.dart';
 
-/// Builds the category grid the way the app does, with the shared
-/// `CategoriesCubit` above it. Dependencies must already be set up with
-/// `setUpDependencies`.
+import 'test_app_providers.dart';
+
+/// Builds the category grid the way the app does, with the shared cubits above
+/// it. Dependencies must already be set up with `setUpDependencies`.
 ///
 /// The screen is [width] by [height] logical pixels.
 Future<void> pumpCategoryMeals(
@@ -24,8 +22,7 @@ Future<void> pumpCategoryMeals(
   addTearDown(tester.view.reset);
 
   await tester.pumpWidget(
-    BlocProvider(
-      create: (_) => getIt<CategoriesCubit>()..load(),
+    TestAppProviders(
       child: MaterialApp(
         theme: AppTheme.light,
         home: CategoryMealsPage(category: category),

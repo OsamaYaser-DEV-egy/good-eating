@@ -124,10 +124,14 @@ Built from the mockup frame, measured in Figma: `ScreenHeader` (back arrow, titl
 - `meals: null` → friendly empty state, never a crash (exam §5.3). Idle state before the first query; error + retry.
 
 ### 5.5 Favorites — `FavoritesPage` (`131:453`)
-- Title "Saved recipes", Video/Recipe tabs kept as a visual filter over the same list.
-- Saved meals as the design's list cards with a filled heart.
-- Remove via the heart and via swipe-to-dismiss with an Undo snackbar; empty state when nothing is saved.
-- Survives a full app kill and relaunch (exam §5.4).
+- Title "Saved recipes" (the same `PageHeading` Home uses), then the saved meals newest first.
+- Each card is the Trending card at full width (335 × 254, 16 apart). The Saved frame's card is the same layout as Trending's: photo with rating, heart, play button and length, then title and creator.
+- **The design's "Video" and "Recipe" tabs are left out.** A saved meal is only an id, a name and a photo, so there is nothing to tell the two apart, and two tabs showing the same list would be controls that do nothing.
+- Remove by tapping the heart or by swiping the card left. Either way a snackbar says "Removed from favorites" with **Undo**, which puts the meal back at its old position.
+- A friendly empty state, a skeleton while the list is read, and an error with Try again if it cannot be.
+- Hearts everywhere (Trending, Popular, the category grid, the details header, this list) read one shared `FavoritesCubit`, so they always agree.
+- Survives a full app kill and relaunch (exam §5.4): the list is one JSON string in `SharedPreferences`. Unreadable stored data counts as "nothing saved", so a corrupt value can never stop the user saving again.
+- If a save fails, the heart goes back to what is really stored and a snackbar says so, on whichever screen is open.
 
 ### 5.6 Onboarding — `OnboardingPage` (`131:213`)
 - Full-bleed image, "60k+ Premium recipes" pill, "Let's Cooking" headline, "Start cooking" button.

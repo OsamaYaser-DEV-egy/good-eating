@@ -8,13 +8,17 @@ import 'package:good_eating/core/theme/app_text_styles.dart';
 import 'package:good_eating/core/utils/ui_placeholders.dart';
 import 'package:good_eating/core/widgets/app_network_image.dart';
 import 'package:good_eating/core/widgets/app_shimmer.dart';
-import 'package:good_eating/core/widgets/favorite_heart_button.dart';
+import 'package:good_eating/features/favorites/presentation/widgets/meal_favorite_heart.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_summary.dart';
 import 'package:good_eating/features/meals/presentation/widgets/creator_line.dart';
 import 'package:good_eating/features/meals/presentation/widgets/meal_overlay_badges.dart';
 
-/// The large card in "Trending now": a wide photo with a play button, rating,
-/// heart and video length, then the title and creator underneath.
+/// The large card in "Trending now" and in the Saved list: a wide photo with a
+/// play button, rating, heart and video length, then the title and creator
+/// underneath.
+///
+/// It fills the width it is given, so a carousel wraps it in a
+/// [carouselWidth] box and the Saved list lets it span the screen.
 ///
 /// The play button, rating, video length and creator are placeholders (see
 /// `UiPlaceholders`), because TheMealDB does not return them.
@@ -23,8 +27,7 @@ class MealTrendingCard extends StatelessWidget {
     required this.meal,
     required this.heroTag,
     this.onTap,
-    this.isFavorite = false,
-    this.onFavoriteToggle,
+    this.onFavoriteRemoved,
     super.key,
   });
 
@@ -34,10 +37,13 @@ class MealTrendingCard extends StatelessWidget {
   /// same one.
   final String heroTag;
   final VoidCallback? onTap;
-  final bool isFavorite;
-  final VoidCallback? onFavoriteToggle;
 
-  static const double width = 280;
+  /// Called after the heart is tapped to remove the meal, for the Saved list
+  /// to offer an undo.
+  final VoidCallback? onFavoriteRemoved;
+
+  /// The card's width in the "Trending now" carousel.
+  static const double carouselWidth = 280;
   static const double height = 254;
   static const double imageHeight = 180;
 
@@ -52,72 +58,69 @@ class MealTrendingCard extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
-        child: SizedBox(
-          width: width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: imageHeight,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Hero(
-                      tag: heroTag,
-                      child: ClipRRect(
-                        borderRadius: AppRadii.lgAll,
-                        child: AppNetworkImage(url: meal.thumbUrl),
-                      ),
-                    ),
-                    Center(
-                      child: ExcludeSemantics(
-                        child: SvgPicture.asset(AppAssets.playButton),
-                      ),
-                    ),
-                    Positioned(
-                      top: _badgeInset,
-                      left: _badgeInset,
-                      child: MealRatingBadge(
-                        rating: UiPlaceholders.rating(meal.id),
-                      ),
-                    ),
-                    Positioned(
-                      top: _badgeInset,
-                      right: _badgeInset,
-                      child: FavoriteHeartButton(
-                        isFavorite: isFavorite,
-                        onPressed: onFavoriteToggle,
-                      ),
-                    ),
-                    Positioned(
-                      bottom: _badgeInset,
-                      right: _badgeInset,
-                      child: MealDurationBadge(
-                        duration: UiPlaceholders.videoLength(meal.id),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: imageHeight,
+              child: Stack(
+                fit: StackFit.expand,
                 children: [
-                  Expanded(
-                    child: Text(
-                      meal.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.paragraphBold,
+                  Hero(
+                    tag: heroTag,
+                    child: ClipRRect(
+                      borderRadius: AppRadii.lgAll,
+                      child: AppNetworkImage(url: meal.thumbUrl),
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.sm),
-                  ExcludeSemantics(child: SvgPicture.asset(AppAssets.more)),
+                  Center(
+                    child: ExcludeSemantics(
+                      child: SvgPicture.asset(AppAssets.playButton),
+                    ),
+                  ),
+                  Positioned(
+                    top: _badgeInset,
+                    left: _badgeInset,
+                    child: MealRatingBadge(
+                      rating: UiPlaceholders.rating(meal.id),
+                    ),
+                  ),
+                  Positioned(
+                    top: _badgeInset,
+                    right: _badgeInset,
+                    child: MealFavoriteHeart(
+                      meal: meal,
+                      onRemoved: onFavoriteRemoved,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: _badgeInset,
+                    right: _badgeInset,
+                    child: MealDurationBadge(
+                      duration: UiPlaceholders.videoLength(meal.id),
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.sm),
-              CreatorLine(creator: UiPlaceholders.creator(meal.id)),
-            ],
-          ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    meal.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.paragraphBold,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                ExcludeSemantics(child: SvgPicture.asset(AppAssets.more)),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            CreatorLine(creator: UiPlaceholders.creator(meal.id)),
+          ],
         ),
       ),
     );
@@ -136,27 +139,24 @@ class MealTrendingCardSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      width: MealTrendingCard.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ShimmerBox(
-            height: MealTrendingCard.imageHeight,
-            borderRadius: AppRadii.lgAll,
-          ),
-          SizedBox(height: AppSpacing.md),
-          ShimmerBox(width: _titleWidth, height: _titleHeight),
-          SizedBox(height: AppSpacing.sm),
-          Row(
-            children: [
-              ShimmerBox.circle(diameter: _avatarSize),
-              SizedBox(width: AppSpacing.sm),
-              ShimmerBox(width: _creatorWidth, height: _creatorHeight),
-            ],
-          ),
-        ],
-      ),
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ShimmerBox(
+          height: MealTrendingCard.imageHeight,
+          borderRadius: AppRadii.lgAll,
+        ),
+        SizedBox(height: AppSpacing.md),
+        ShimmerBox(width: _titleWidth, height: _titleHeight),
+        SizedBox(height: AppSpacing.sm),
+        Row(
+          children: [
+            ShimmerBox.circle(diameter: _avatarSize),
+            SizedBox(width: AppSpacing.sm),
+            ShimmerBox(width: _creatorWidth, height: _creatorHeight),
+          ],
+        ),
+      ],
     );
   }
 }

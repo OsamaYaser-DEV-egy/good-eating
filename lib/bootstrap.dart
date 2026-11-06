@@ -25,7 +25,7 @@ Future<void> bootstrap() async {
   );
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-  configureDependencies();
+  await configureDependencies();
 
   runApp(const App());
 }

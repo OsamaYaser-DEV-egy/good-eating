@@ -53,7 +53,7 @@ LIVE_API=1 flutter test test/live
 - [x] **Stage 2**: Home
 - [x] **Stage 3**: category meals grid
 - [x] **Stage 4**: meal details
-- [ ] Stage 5: favorites
+- [x] **Stage 5**: favorites
 - [ ] Stage 6: search
 - [ ] Stage 7: onboarding, notifications, profile
 - [ ] Stage 8: polish and QA

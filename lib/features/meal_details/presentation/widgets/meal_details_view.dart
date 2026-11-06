@@ -7,9 +7,9 @@ import 'package:good_eating/core/state/data_state.dart';
 import 'package:good_eating/core/theme/app_spacing.dart';
 import 'package:good_eating/core/widgets/app_error_view.dart';
 import 'package:good_eating/core/widgets/data_state_view.dart';
-import 'package:good_eating/core/widgets/favorite_heart_button.dart';
 import 'package:good_eating/core/widgets/primary_button.dart';
 import 'package:good_eating/core/widgets/screen_header.dart';
+import 'package:good_eating/features/favorites/presentation/widgets/meal_favorite_heart.dart';
 import 'package:good_eating/features/meal_details/presentation/cubit/meal_details_cubit.dart';
 import 'package:good_eating/features/meal_details/presentation/meal_details_navigation.dart';
 import 'package:good_eating/features/meal_details/presentation/widgets/creator_profile_row.dart';
@@ -53,9 +53,11 @@ class MealDetailsView extends StatelessWidget {
             children: [
               ScreenHeader(
                 title: args.name,
-                trailing: const SizedBox.square(
+                trailing: SizedBox.square(
                   dimension: 48,
-                  child: Center(child: FavoriteHeartButton(isFavorite: false)),
+                  child: Center(
+                    child: MealFavoriteHeart(meal: args.toSummary()),
+                  ),
                 ),
               ),
               const SizedBox(height: _afterHeader),

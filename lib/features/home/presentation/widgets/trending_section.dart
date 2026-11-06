@@ -58,11 +58,17 @@ class TrendingSection extends StatelessWidget {
                     scope: HeroTags.trending,
                     mealId: meal.id,
                   );
-                  return MealTrendingCard(
-                    meal: meal,
-                    heroTag: heroTag,
-                    onTap: () =>
-                        openMealDetails(context, meal: meal, heroTag: heroTag),
+                  return SizedBox(
+                    width: MealTrendingCard.carouselWidth,
+                    child: MealTrendingCard(
+                      meal: meal,
+                      heroTag: heroTag,
+                      onTap: () => openMealDetails(
+                        context,
+                        meal: meal,
+                        heroTag: heroTag,
+                      ),
+                    ),
                   ).entrance(index: index);
                 },
               );
@@ -92,5 +98,8 @@ class _TrendingSkeleton extends StatelessWidget {
   }
 
   static Widget _skeletonItem(BuildContext context, int index) =>
-      const MealTrendingCardSkeleton();
+      const SizedBox(
+        width: MealTrendingCard.carouselWidth,
+        child: MealTrendingCardSkeleton(),
+      );
 }

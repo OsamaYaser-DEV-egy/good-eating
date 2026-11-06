@@ -251,7 +251,7 @@ final class DataFailure<T> extends DataState<T> { final Failure failure; }
 | `HomeFeedCubit` | `DataState<HomeFeed>` | the Trending and Recent carousels (categories 1 and 2) |
 | `MealDetailsCubit` | `DataState<MealDetail>` | lookup.php for one id; created per screen with the meal id (`getIt<MealDetailsCubit>(param1: id)`) |
 | `SearchCubit` | sealed `SearchState`: Idle / Loading / Results / Empty / Error | debounced search.php |
-| `FavoritesCubit` | `DataState<List<MealSummary>>` | local storage, exposes `toggle(meal)` and `isFavorite(id)` |
+| `FavoritesCubit` | `DataState<List<MealSummary>>` | the saved meals; `toggle`, `add`, `remove`, `insert(meal, index)` (for Undo), `isFavorite(id)`, and a `saveFailures` stream. Changes show at once and are written afterwards, one write at a time in order, each carrying the full list so the last change always wins; a failed write puts the screen back to what is stored. Changes are ignored until the stored list has loaded, so an early tap can never replace everything with one meal |
 | `ShellCubit` | `ShellTab` enum | the selected shell tab (home, saved, search, notifications, profile) |
 | `OnboardingCubit` | `bool` | first-run flag |
 
@@ -263,7 +263,7 @@ Rules:
   navigator in `App`, so pushed screens read the same list as the shell.
 - If the categories fail to load nothing else can, so Home swaps its sections for one error with one
   "Try again" instead of four; failures of a single meal list stay inline in their own section.
-- `FavoritesCubit` is a single app-scoped instance (a `lazySingleton` provided above the shell), so the
+- `FavoritesCubit` is a single app-wide instance (created once in `App` and provided above the navigator, so pushed screens see it too), so the
   heart on the details page, the heart on every card, the favorites tab, and the Profile saved-count
   all read one list — no manual refresh, no duplicated storage reads.
 - Cubits never touch `BuildContext` and never import `material.dart`.

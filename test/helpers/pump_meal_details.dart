@@ -5,6 +5,8 @@ import 'package:good_eating/core/theme/app_theme.dart';
 import 'package:good_eating/features/meal_details/presentation/meal_details_navigation.dart';
 import 'package:good_eating/features/meal_details/presentation/pages/meal_details_page.dart';
 
+import 'test_app_providers.dart';
+
 /// The hero tag every test page is opened with.
 const String testHeroTag = 'test-hero';
 
@@ -26,14 +28,16 @@ Future<void> pumpMealDetails(
   addTearDown(tester.view.reset);
 
   await tester.pumpWidget(
-    MaterialApp(
-      theme: AppTheme.light,
-      home: MealDetailsPage(
-        args: MealDetailsArgs(
-          mealId: mealId,
-          name: name,
-          thumbUrl: '',
-          heroTag: testHeroTag,
+    TestAppProviders(
+      child: MaterialApp(
+        theme: AppTheme.light,
+        home: MealDetailsPage(
+          args: MealDetailsArgs(
+            mealId: mealId,
+            name: name,
+            thumbUrl: '',
+            heroTag: testHeroTag,
+          ),
         ),
       ),
     ),

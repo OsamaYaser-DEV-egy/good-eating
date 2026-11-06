@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:good_eating/app/di/injector.dart';
 import 'package:good_eating/app/router/app_router.dart';
 import 'package:good_eating/core/theme/app_theme.dart';
 import 'package:good_eating/features/home/presentation/pages/home_page.dart';
-import 'package:good_eating/features/meals/presentation/cubit/categories_cubit.dart';
 import 'package:good_eating/features/shell/presentation/cubit/shell_cubit.dart';
 
-/// Builds Home the way the app does: the shared `CategoriesCubit` and the
-/// shell's `ShellCubit` above it. Dependencies must already be set up with
+import 'test_app_providers.dart';
+
+/// Builds Home the way the app does: the shared cubits and the shell's
+/// `ShellCubit` above it. Dependencies must already be set up with
 /// `setUpDependencies`.
 ///
 /// The screen is [width] by [height] logical pixels. Home scrolls and builds
@@ -32,11 +32,8 @@ Future<ShellCubit> pumpHome(
   addTearDown(shell.close);
 
   await tester.pumpWidget(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => getIt<CategoriesCubit>()..load()),
-        BlocProvider.value(value: shell),
-      ],
+    TestAppProviders(
+      shell: shell,
       child: MaterialApp(
         theme: AppTheme.light,
         onGenerateRoute: AppRouter.onGenerateRoute,

@@ -104,11 +104,15 @@ the video, and long instructions scroll without overflow.
 
 ## Stage 5 — Favorites
 
-- `FavoritesLocalDataSource` (`shared_preferences`) + `FavoritesRepository` + use cases.
-- App-scoped `FavoritesCubit` provided above the shell.
-- `FavoritesPage` with the design's saved-recipe cards, Video/Recipe tabs, swipe-to-dismiss + Undo,
-  empty state.
-- Heart state syncs live between Home, the grid, Search results, details, and this tab.
+- `FavoritesLocalDataSource` (`shared_preferences`) + `FavoritesRepository` + `GetFavorites` / `SaveFavorites`.
+  The repository reads and replaces the whole list; the cubit owns ordering.
+- One `FavoritesCubit` for the app, provided above the navigator, plus a `SaveFailureListener` that
+  shows a snackbar when a write fails.
+- `MealFavoriteHeart`, one widget every card and the details header use, so hearts always agree.
+- `FavoritesPage`: the saved meals as full-width Trending cards, swipe-to-remove, Undo, skeleton, error
+  and empty states. The design's Video/Recipe tabs are omitted (nothing to tell them apart).
+- `configureDependencies` became async, because `SharedPreferences` must be opened first.
+- Heart state syncs live between Home, the grid, details and this tab (Search joins in Stage 6).
 
 **Figma needed:** `?node-id=131-453`.
 **Done when:** saving from any screen updates everywhere instantly and the list survives a full app

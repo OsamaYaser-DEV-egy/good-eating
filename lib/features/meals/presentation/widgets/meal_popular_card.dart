@@ -8,7 +8,7 @@ import 'package:good_eating/core/utils/formatters.dart';
 import 'package:good_eating/core/utils/ui_placeholders.dart';
 import 'package:good_eating/core/widgets/app_network_image.dart';
 import 'package:good_eating/core/widgets/app_shimmer.dart';
-import 'package:good_eating/core/widgets/favorite_heart_button.dart';
+import 'package:good_eating/features/favorites/presentation/widgets/meal_favorite_heart.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_summary.dart';
 
 /// The tall grey card used in "Popular category" and in the category grid: a
@@ -24,8 +24,6 @@ class MealPopularCard extends StatelessWidget {
     required this.meal,
     required this.heroTag,
     this.onTap,
-    this.isFavorite = false,
-    this.onFavoriteToggle,
     super.key,
   });
 
@@ -35,8 +33,6 @@ class MealPopularCard extends StatelessWidget {
   /// the same one.
   final String heroTag;
   final VoidCallback? onTap;
-  final bool isFavorite;
-  final VoidCallback? onFavoriteToggle;
 
   /// The card's width in the "Popular category" carousel.
   static const double carouselWidth = 150;
@@ -122,11 +118,7 @@ class MealPopularCard extends StatelessWidget {
               Positioned(
                 right: _panelPadding,
                 bottom: _panelPadding,
-                child: FavoriteHeartButton(
-                  isFavorite: isFavorite,
-                  onPressed: onFavoriteToggle,
-                  size: _heartSize,
-                ),
+                child: MealFavoriteHeart(meal: meal, size: _heartSize),
               ),
             ],
           ),

@@ -22,6 +22,10 @@ final class MealDetailsArgs {
 
   /// Matches the tag on the photo that was tapped.
   final String heroTag;
+
+  /// The meal in the short form that is saved to favorites.
+  MealSummary toSummary() =>
+      MealSummary(id: mealId, name: name, thumbUrl: thumbUrl);
 }
 
 /// Pushes the details screen for [meal]. [heroTag] must match the tag on the
