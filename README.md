@@ -27,6 +27,12 @@ flutter analyze
 flutter test
 ```
 
+An opt-in smoke test checks the models against the live API (skipped by default):
+
+```bash
+LIVE_API=1 flutter test test/live
+```
+
 ## Stack
 
 | Concern | Choice |
@@ -43,7 +49,7 @@ flutter test
 ## Progress
 
 - [x] **Stage 0**: foundation (theme, core, DI, router, custom notched nav bar)
-- [ ] Stage 1: meals domain and data layer
+- [x] **Stage 1**: meals domain and data layer
 - [ ] Stage 2: Home
 - [ ] Stage 3: category meals grid
 - [ ] Stage 4: meal details

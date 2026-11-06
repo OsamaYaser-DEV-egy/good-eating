@@ -11,6 +11,13 @@ abstract final class ApiConstants {
   static const String idQuery = 'i';
   static const String nameQuery = 's';
 
+  static const String imagesBaseUrl = 'https://www.themealdb.com/images';
+
+  /// Small PNG for an ingredient. The name must be percent-encoded because
+  /// ingredient names contain spaces ("soy sauce").
+  static String ingredientImageUrl(String ingredientName) =>
+      '$imagesBaseUrl/ingredients/${Uri.encodeComponent(ingredientName)}-Small.png';
+
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 15);
 }

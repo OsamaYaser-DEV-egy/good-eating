@@ -187,7 +187,10 @@ final class MealDetail extends Equatable {
 | Values arrive as `""`, `" "`, or `null` interchangeably | A single `String?.nullIfBlank` extension, used by every model. |
 | Ids look numeric but are strings | All ids stay `String`; never `int.parse`. |
 | `strTags` is `"Pasta,Curry"` or null | Split on comma, trim, drop blanks. |
-| Unknown or extra keys | Ignored — models read keys explicitly, never iterate `Map.values`. |
+| Unknown or extra keys | Ignored — models read keys explicitly, never iterate `Map.values`. `filter.php` now also returns `strArea` / `strCountry`; they are simply not read there. |
+| `strArea` is null on newer recipes, with `strCountry` filled instead | `area` falls back to `strCountry`, so the origin is never blank when the API knows it. |
+| A list entry is missing its id or name | The entry is dropped, not the whole list: `parseJsonList` skips anything that throws `ParsingException`. A detail lookup that ends up with no valid entry becomes `NotFoundFailure`. |
+| Ingredient image URLs contain spaces | `ApiConstants.ingredientImageUrl` percent-encodes the name; an unencoded `soy sauce` fails to load. |
 
 Every model gets a `fromJson` unit test with a real captured response plus a hostile fixture where
 every field is null or blank.
