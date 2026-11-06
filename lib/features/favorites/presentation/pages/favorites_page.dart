@@ -9,6 +9,7 @@ import 'package:good_eating/core/widgets/page_heading.dart';
 import 'package:good_eating/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:good_eating/features/favorites/presentation/widgets/favorites_list.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_summary.dart';
+import 'package:good_eating/features/meals/presentation/widgets/meal_card_list_skeleton.dart';
 
 /// The Saved tab: every meal the user has hearted, newest first.
 ///
@@ -44,7 +45,7 @@ class _SavedMeals extends StatelessWidget {
         return DataStateView<List<MealSummary>>(
           state: state,
           onRetry: cubit.load,
-          loadingBuilder: (context) => const FavoritesListSkeleton(),
+          loadingBuilder: (context) => const MealCardListSkeleton(),
           errorBuilder: (context, failure) =>
               AppErrorView(failure: failure, onRetry: cubit.load),
           builder: (context, meals) {

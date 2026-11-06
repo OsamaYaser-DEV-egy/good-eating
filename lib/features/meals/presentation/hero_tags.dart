@@ -9,6 +9,8 @@ abstract final class HeroTags {
   static const String recent = 'recent';
   static const String grid = 'grid';
   static const String favorites = 'favorites';
+  static const String search = 'search';
+  static const String profile = 'profile';
 
   /// The tag for the photo of [mealId] shown in [scope].
   static String meal({required String scope, required String mealId}) =>

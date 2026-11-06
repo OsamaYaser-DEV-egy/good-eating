@@ -122,8 +122,11 @@ kill and relaunch.
 
 ## Stage 6 — Search
 
-- `SearchCubit` with a **300 ms debounce** and in-flight request cancellation.
-- `SearchPage`: real `TextField`, clear button, result list cards.
+- `SearchCubit` with a **300 ms debounce**; stale answers are discarded rather than cancelled, so the
+  screen only ever shows results for the latest text. Sealed `SearchState`: idle, loading, results,
+  empty, error.
+- `SearchPage`: real `TextField` (focus managed by the shell's tab changes, never at launch), clear
+  button, result cards shared with the Saved tab (`MealCardListSkeleton` is now shared too).
 - Idle · loading · results · `meals: null` empty state · error + retry.
 - Reached from the nav bar's centre button and from Home's search field.
 
@@ -135,10 +138,13 @@ with no crash, and results open the details screen.
 
 ## Stage 7 — Onboarding, Notifications, Profile
 
-- `OnboardingPage` from the design; first-run flag in local storage; native splash so there is no
-  white flash on launch.
-- `NotificationsPage` — tabs, Today / Yesterday groups, rows driven by `UiPlaceholders`.
-- `ProfilePage` — header, stats (saved count is real from `FavoritesCubit`), recipe cards.
+- `OnboardingPage` from the design's screenshot; first-run flag in `SharedPreferences` behind a
+  repository, two use cases and an `OnboardingCubit`; the app opens on it only on a first launch.
+  Optional background photo slot (`assets/images/onboarding.jpg`) with a gradient fallback.
+  The native splash was not done.
+- `NotificationsPage` — Today / Yesterday groups of example notifications. Built without the frame.
+- `ProfilePage` — header, stats (Recipe is the real saved count), and the saved meals as recipe cards.
+- All five shell tabs are now real pages, so `ShellPlaceholderTab` is gone.
 
 **Figma needed:** `?node-id=131-213`, `?node-id=139-248`, `?node-id=131-753`.
 **Done when:** a fresh install shows onboarding once, and both remaining tabs render their design

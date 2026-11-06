@@ -5,7 +5,6 @@ import 'package:good_eating/core/theme/app_colors.dart';
 import 'package:good_eating/core/theme/app_radii.dart';
 import 'package:good_eating/core/theme/app_spacing.dart';
 import 'package:good_eating/core/widgets/app_bottom_nav_bar.dart';
-import 'package:good_eating/core/widgets/app_shimmer.dart';
 import 'package:good_eating/core/widgets/entrance_animation.dart';
 import 'package:good_eating/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:good_eating/features/meal_details/presentation/meal_details_navigation.dart';
@@ -108,32 +107,6 @@ class _RemoveBackground extends StatelessWidget {
           padding: EdgeInsets.only(right: AppSpacing.xxl),
           child: Icon(Icons.delete_outline_rounded, color: AppColors.error100),
         ),
-      ),
-    );
-  }
-}
-
-/// Placeholder shown while the saved meals are read.
-class FavoritesListSkeleton extends StatelessWidget {
-  const FavoritesListSkeleton({super.key});
-
-  static const int _count = 2;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppShimmer(
-      child: ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.screenHorizontal,
-          FavoritesList._top,
-          AppSpacing.screenHorizontal,
-          0,
-        ),
-        itemCount: _count,
-        separatorBuilder: (context, index) =>
-            const SizedBox(height: FavoritesList._gap),
-        itemBuilder: (context, index) => const MealTrendingCardSkeleton(),
       ),
     );
   }

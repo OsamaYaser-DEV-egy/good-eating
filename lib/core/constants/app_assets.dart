@@ -2,6 +2,7 @@
 abstract final class AppAssets {
   static const String _icons = 'assets/icons';
   static const String _avatars = 'assets/avatars';
+  static const String _images = 'assets/images';
 
   static const String navHome = '$_icons/nav_home.svg';
   static const String navHomeActive = '$_icons/nav_home_active.svg';
@@ -21,4 +22,10 @@ abstract final class AppAssets {
   static const String avatarJamesWolden = '$_avatars/james_wolden.png';
   static const String avatarNikiSamantha = '$_avatars/niki_samantha.png';
   static const String avatarRobertaAnny = '$_avatars/roberta_anny.png';
+  static const String avatarAlessandraBlair = '$_avatars/alessandra_blair.jpg';
+
+  /// The full-bleed photo behind the onboarding screen. It is optional: the
+  /// design's photo is a raw image that could not be exported, so until a
+  /// file is placed here the screen shows a dark gradient instead.
+  static const String onboardingPhoto = '$_images/onboarding.jpg';
 }

@@ -10,7 +10,10 @@ import 'package:good_eating/features/favorites/presentation/widgets/save_failure
 import 'package:good_eating/features/meals/presentation/cubit/categories_cubit.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({this.showOnboarding = false, super.key});
+
+  /// Whether to open on the welcome screen. True on the very first launch.
+  final bool showOnboarding;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,12 @@ class App extends StatelessWidget {
         title: 'Good Eating',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
-        initialRoute: AppRoutes.shell,
+        initialRoute: showOnboarding ? AppRoutes.onboarding : AppRoutes.shell,
+        // The default would also build "/" underneath "/onboarding", so Home
+        // would load behind the welcome screen and Back would reveal it.
+        onGenerateInitialRoutes: (name) => [
+          AppRouter.onGenerateRoute(RouteSettings(name: name)),
+        ],
         onGenerateRoute: AppRouter.onGenerateRoute,
         builder: (context, child) =>
             SaveFailureListener(child: child ?? const SizedBox.shrink()),

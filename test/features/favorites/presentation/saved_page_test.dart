@@ -9,6 +9,7 @@ import 'package:good_eating/core/widgets/favorite_heart_button.dart';
 import 'package:good_eating/features/favorites/presentation/widgets/favorites_list.dart';
 import 'package:good_eating/features/meal_details/presentation/pages/meal_details_page.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_summary.dart';
+import 'package:good_eating/features/meals/presentation/widgets/meal_card_list_skeleton.dart';
 import 'package:good_eating/features/meals/presentation/widgets/meal_trending_card.dart';
 
 import '../../../helpers/fake_favorites_repository.dart';
@@ -179,7 +180,7 @@ void main() {
       await tester.tap(find.bySemanticsLabel('Saved'));
       await tester.pump(const Duration(milliseconds: 300));
 
-      expect(find.byType(FavoritesListSkeleton), findsOneWidget);
+      expect(find.byType(MealCardListSkeleton), findsOneWidget);
       expect(find.byType(AppEmptyView), findsNothing);
 
       hold.complete();

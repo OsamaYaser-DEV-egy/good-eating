@@ -11,6 +11,15 @@ import 'package:good_eating/core/theme/app_colors.dart';
 abstract final class AppTextStyles {
   static const String fontFamily = 'Poppins';
 
+  /// The largest size in the scale, used for the welcome headline.
+  static const TextStyle displayBold = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 56,
+    fontWeight: FontWeight.w600,
+    height: 1.2,
+    color: AppColors.neutral90,
+  );
+
   static const TextStyle h4Bold = TextStyle(
     fontFamily: fontFamily,
     fontSize: 24,

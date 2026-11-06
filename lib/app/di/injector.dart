@@ -20,6 +20,13 @@ import 'package:good_eating/features/meals/domain/usecases/get_meal_details.dart
 import 'package:good_eating/features/meals/domain/usecases/get_meals_by_category.dart';
 import 'package:good_eating/features/meals/domain/usecases/search_meals.dart';
 import 'package:good_eating/features/meals/presentation/cubit/categories_cubit.dart';
+import 'package:good_eating/features/onboarding/data/datasources/onboarding_local_data_source.dart';
+import 'package:good_eating/features/onboarding/data/repositories/onboarding_repository_impl.dart';
+import 'package:good_eating/features/onboarding/domain/repositories/onboarding_repository.dart';
+import 'package:good_eating/features/onboarding/domain/usecases/complete_onboarding.dart';
+import 'package:good_eating/features/onboarding/domain/usecases/is_onboarding_completed.dart';
+import 'package:good_eating/features/onboarding/presentation/cubit/onboarding_cubit.dart';
+import 'package:good_eating/features/search/presentation/cubit/search_cubit.dart';
 import 'package:good_eating/features/shell/presentation/cubit/shell_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,8 +68,25 @@ Future<void> configureDependencies() async {
     )
     ..registerLazySingleton<GetFavorites>(() => GetFavorites(getIt()))
     ..registerLazySingleton<SaveFavorites>(() => SaveFavorites(getIt()))
+    // Onboarding
+    ..registerLazySingleton<OnboardingLocalDataSource>(
+      () => OnboardingLocalDataSourceImpl(getIt()),
+    )
+    ..registerLazySingleton<OnboardingRepository>(
+      () => OnboardingRepositoryImpl(getIt()),
+    )
+    ..registerLazySingleton<IsOnboardingCompleted>(
+      () => IsOnboardingCompleted(getIt()),
+    )
+    ..registerLazySingleton<CompleteOnboarding>(
+      () => CompleteOnboarding(getIt()),
+    )
     // Presentation
     ..registerFactory<ShellCubit>(ShellCubit.new)
+    ..registerFactory<OnboardingCubit>(
+      () => OnboardingCubit(completeOnboarding: getIt()),
+    )
+    ..registerFactory<SearchCubit>(() => SearchCubit(searchMeals: getIt()))
     ..registerFactory<FavoritesCubit>(
       () => FavoritesCubit(getFavorites: getIt(), saveFavorites: getIt()),
     )

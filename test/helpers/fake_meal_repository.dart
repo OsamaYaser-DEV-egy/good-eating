@@ -138,7 +138,30 @@ final class FakeMealRepository implements MealRepository {
     return Future.value(detailsOverrides[id] ?? Success(fakeMealDetail(id)));
   }
 
+  /// What [searchMeals] returns for a given query. Unlisted queries get three
+  /// meals named after the query, except any containing "zzz", which match
+  /// nothing.
+  final Map<String, Result<List<MealSummary>>> searchOverrides = {};
+  final Map<String, Completer<Result<List<MealSummary>>>> _heldSearches = {};
+
+  /// Every query sent to [searchMeals], in order.
+  final List<String> requestedSearches = [];
+
+  /// Makes [searchMeals] for [query] wait for the completer.
+  Completer<Result<List<MealSummary>>> holdSearch(String query) =>
+      _heldSearches[query] = Completer();
+
   @override
-  Future<Result<List<MealSummary>>> searchMeals(String query) =>
-      Future.value(const Success([]));
+  Future<Result<List<MealSummary>>> searchMeals(String query) {
+    requestedSearches.add(query);
+    final held = _heldSearches.remove(query);
+    if (held != null) return held.future;
+
+    final scripted = searchOverrides[query];
+    if (scripted != null) return Future.value(scripted);
+    if (query.contains('zzz')) return Future.value(const Success([]));
+    return Future.value(
+      Success([for (var i = 1; i <= 3; i++) fakeMeal(query, i)]),
+    );
+  }
 }

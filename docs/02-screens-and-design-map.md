@@ -118,10 +118,12 @@ Built from the mockup frame, measured in Figma: `ScreenHeader` (back arrow, titl
 - Error: the header and photo stay and the lower part shows the failure with **Try again**.
 
 ### 5.4 Search — `SearchPage` (`139:3178` + `131:482`)
-- The design's field as a real `TextField`, autofocused, with a clear button.
-- **300 ms debounce** before calling `search.php`; in-flight requests cancelled (exam bonus).
-- Results as the saved-recipe list cards.
-- `meals: null` → friendly empty state, never a crash (exam §5.3). Idle state before the first query; error + retry.
+The design has no Search screen, so this one is a heading ("Search recipes"), the design's field (`139:3178`) as a real `TextField`, and the results below.
+- **The field** is 44 px high and 335 wide at 375, with a 1 px border, the search icon and hint, a clear button while there is text, and a brand-red border while focused. It takes focus when the Search tab is opened (from the nav bar's centre button or from Home's search box) and gives it up when the user leaves, so the keyboard is never raised at launch while this tab is hidden behind Home.
+- **300 ms debounce** (exam bonus): a word typed letter by letter costs one request. A request still running when the text changes is not cancelled, but its answer is thrown away, so the screen only ever shows results for the latest text. The keyboard's search key searches at once.
+- **Results** are the same full-width cards as the Saved tab, with the same hearts and a hero into the details screen.
+- **`meals: null`** is a normal answer, not an error (exam §5.3): a friendly "No recipes found" that names what was searched. Before the first query the tab invites the user to type; a failed request shows the error with **Try again**.
+- The text and results are kept while another tab is open, because the shell keeps every tab alive.
 
 ### 5.5 Favorites — `FavoritesPage` (`131:453`)
 - Title "Saved recipes" (the same `PageHeading` Home uses), then the saved meals newest first.
@@ -134,13 +136,23 @@ Built from the mockup frame, measured in Figma: `ScreenHeader` (back arrow, titl
 - If a save fails, the heart goes back to what is really stored and a snackbar says so, on whichever screen is open.
 
 ### 5.6 Onboarding — `OnboardingPage` (`131:213`)
-- Full-bleed image, "60k+ Premium recipes" pill, "Let's Cooking" headline, "Start cooking" button.
-- Shown once; the first-run flag shares the favorites storage.
+Built from the design's screenshot, because the frame's code could not be read (Figma call limit).
+- A dark full-bleed backdrop, "★ **60k+** Premium recipes" at the top, the 56 px "Let's Cooking" headline, the subtitle, and a 205 px red "Start cooking →" button. The status bar icons are light on this screen only.
+- **The background photo is missing.** It is a raw image in the Figma file that could not be exported. Until a file is placed at `assets/images/onboarding.jpg` the screen shows a dark gradient, which looks intentional; dropping the photo in is all that is needed, with no code change.
+- Shown once. The first-run flag is one boolean in `SharedPreferences`. Tapping the button records it, then replaces the screen with the app, so Back cannot return to the welcome screen. A second tap while saving is ignored, and if the flag cannot be saved the user still goes on.
+- The welcome screen is the only route built at launch, so Home does not load behind it. If the flag cannot be read the welcome screen is skipped.
+- Not done: the native splash. The Android and iOS launch backgrounds stay white, so there can be a brief white frame before the dark welcome screen on a first launch.
 
 ### 5.7 Notifications — `NotificationsPage` (`139:248`)
-- Tabs, Today / Yesterday groups, notification rows.
-- Content from `UiPlaceholders`, styled exactly as designed.
+**Built without reading the frame** (Figma call limit). Only its structure was known from the earlier metadata: a heading, then "Today" and "Yesterday" groups. The rows are designed in the app's own style, so this screen has not been checked against Figma. Send the frame as an image and it can be matched.
+- Heading, then the two groups. Each row is a creator portrait, "**Name** did something", the time, and a red dot while unread.
+- The notifications are fixed examples (`NotificationSamples`): TheMealDB has no accounts to notify. The design's tabs are left out, since there is nothing for them to switch.
+- Each row reads as one sentence to a screen reader, including "unread".
 
 ### 5.8 Profile — `ProfilePage` (`131:753`)
-- Profile header, stats row, recipe cards.
-- The saved-recipes count is real, read from `FavoritesCubit`; the rest is placeholder.
+Built from the frame's design context, measured: heading, a 100 px portrait with "Edit profile", name and bio, a four-count row, a 1 px divider, then recipe cards 335 × 200.
+- The person (Alessandra Blair) is a fixed example, because there are no accounts. "Edit profile" has no account behind it and does nothing.
+- **The recipe cards are the user's saved meals**, newest first, so they are real: tapping one opens it, and the heart removes it. The "Recipe" count above is how many there are. Videos, Followers and Following are the design's example numbers. The ingredient count, time and rating on each card are placeholders.
+- Cards darken towards the bottom (black at 60 %, fading out 110 px up) so the white title and "12 Ingredients | 40 min" stay readable on any photo.
+- The design's "Video" and "Recipe" tabs and the header's "more" icon are left out: they would do nothing.
+- Empty, loading and failed states are handled: a friendly message, a skeleton with a dash for the count, and an inline error with Try again.

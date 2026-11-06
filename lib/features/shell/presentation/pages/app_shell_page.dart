@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:good_eating/features/favorites/presentation/pages/favorites_page.dart';
 import 'package:good_eating/features/home/presentation/pages/home_page.dart';
+import 'package:good_eating/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:good_eating/features/profile/presentation/pages/profile_page.dart';
+import 'package:good_eating/features/search/presentation/pages/search_page.dart';
 import 'package:good_eating/features/shell/presentation/cubit/shell_cubit.dart';
 import 'package:good_eating/features/shell/presentation/cubit/shell_tab.dart';
 import 'package:good_eating/features/shell/presentation/widgets/shell_bottom_bar.dart';
-import 'package:good_eating/features/shell/presentation/widgets/shell_placeholder_tab.dart';
 
 /// Root screen: the five tabs behind the custom bottom navigation bar.
 ///
@@ -19,9 +21,9 @@ class AppShellPage extends StatelessWidget {
   static const List<Widget> _tabs = [
     HomePage(),
     FavoritesPage(),
-    ShellPlaceholderTab(title: 'Search'),
-    ShellPlaceholderTab(title: 'Notifications'),
-    ShellPlaceholderTab(title: 'Profile'),
+    SearchPage(),
+    NotificationsPage(),
+    ProfilePage(),
   ];
 
   @override

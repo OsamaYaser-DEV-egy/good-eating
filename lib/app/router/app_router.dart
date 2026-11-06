@@ -8,6 +8,7 @@ import 'package:good_eating/features/category_meals/presentation/category_meals_
 import 'package:good_eating/features/category_meals/presentation/pages/category_meals_page.dart';
 import 'package:good_eating/features/meal_details/presentation/meal_details_navigation.dart';
 import 'package:good_eating/features/meal_details/presentation/pages/meal_details_page.dart';
+import 'package:good_eating/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:good_eating/features/shell/presentation/cubit/shell_cubit.dart';
 import 'package:good_eating/features/shell/presentation/pages/app_shell_page.dart';
 
@@ -15,6 +16,7 @@ import 'package:good_eating/features/shell/presentation/pages/app_shell_page.dar
 abstract final class AppRouter {
   static Route<Object?> onGenerateRoute(RouteSettings settings) {
     return switch (settings.name) {
+      AppRoutes.onboarding => _onboarding(settings),
       AppRoutes.categoryMeals => _categoryMeals(settings),
       AppRoutes.mealDetails => _mealDetails(settings),
       _ => _shell(settings),
@@ -28,6 +30,13 @@ abstract final class AppRouter {
         create: (_) => getIt<ShellCubit>(),
         child: const AppShellPage(),
       ),
+    );
+  }
+
+  static Route<Object?> _onboarding(RouteSettings settings) {
+    return FadeThroughPageRoute<Object?>(
+      settings: settings,
+      builder: (_) => const OnboardingPage(),
     );
   }
 

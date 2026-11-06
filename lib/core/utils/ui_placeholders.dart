@@ -20,8 +20,38 @@ final class PlaceholderCreator extends Equatable {
   List<Object?> get props => [name, avatarAsset, location];
 }
 
+/// The signed-in user shown on the Profile tab. There are no accounts in
+/// TheMealDB, so this is a fixed example taken from the design.
+final class PlaceholderProfile extends Equatable {
+  const PlaceholderProfile({
+    required this.name,
+    required this.bio,
+    required this.avatarAsset,
+    required this.videoCount,
+    required this.followerCount,
+    required this.followingCount,
+  });
+
+  final String name;
+  final String bio;
+  final String avatarAsset;
+  final String videoCount;
+  final String followerCount;
+  final String followingCount;
+
+  @override
+  List<Object?> get props => [
+    name,
+    bio,
+    avatarAsset,
+    videoCount,
+    followerCount,
+    followingCount,
+  ];
+}
+
 /// Values the design shows but TheMealDB does not return: rating, review
-/// count, cook time, video length and recipe author.
+/// count, cook time, video length, recipe author and the signed-in profile.
 ///
 /// Everything is derived from a stable hash of the meal id, so a given meal
 /// always shows the same numbers across rebuilds and app launches.
@@ -51,12 +81,28 @@ abstract final class UiPlaceholders {
     ),
   ];
 
+  /// The profile on the Profile tab, as drawn in the design.
+  static const PlaceholderProfile profile = PlaceholderProfile(
+    name: 'Alessandra Blair',
+    bio:
+        'Hello world I\u2019m Alessandra Blair, I\u2019m from Italy \u{1F1EE}\u{1F1F9} '
+        'I love cooking so much!',
+    avatarAsset: AppAssets.avatarAlessandraBlair,
+    videoCount: '13',
+    followerCount: '14K',
+    followingCount: '120',
+  );
+
   /// 4.0 to 5.0 in steps of 0.1.
   static double rating(String mealId) =>
       4 + (_hash(mealId, 'rating') % 11) / 10;
 
   /// 50 to 500 reviews.
   static int reviewCount(String mealId) => 50 + _hash(mealId, 'reviews') % 451;
+
+  /// 6 to 16 ingredients.
+  static int ingredientCount(String mealId) =>
+      6 + _hash(mealId, 'ingredients') % 11;
 
   /// 10 to 60 minutes in steps of 5.
   static int cookMinutes(String mealId) =>

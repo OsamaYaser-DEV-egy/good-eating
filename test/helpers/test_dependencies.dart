@@ -5,6 +5,7 @@ import 'package:good_eating/core/services/link_launcher.dart';
 import 'package:good_eating/features/favorites/data/datasources/favorites_local_data_source.dart';
 import 'package:good_eating/features/favorites/domain/repositories/favorites_repository.dart';
 import 'package:good_eating/features/meals/domain/repositories/meal_repository.dart';
+import 'package:good_eating/features/onboarding/domain/repositories/onboarding_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_link_launcher.dart';
@@ -18,13 +19,15 @@ import 'fake_meal_repository.dart';
 /// Saved meals use the real storage code on top of `SharedPreferences`' mock
 /// store, which starts empty. Pass [keepStorage] to keep what the previous
 /// call left in it: that is how a test simulates closing and reopening the
-/// app. Pass [favorites] to script the favorites repository instead.
+/// app. Pass [favorites] or [onboarding] to script those repositories
+/// instead.
 ///
 /// Call it before building any widget that resolves dependencies.
 Future<FakeMealRepository> setUpDependencies({
   FakeMealRepository? repository,
   bool keepStorage = false,
   FavoritesRepository? favorites,
+  OnboardingRepository? onboarding,
 }) async {
   if (!keepStorage) SharedPreferences.setMockInitialValues({});
   await getIt.reset();
@@ -41,6 +44,12 @@ Future<FakeMealRepository> setUpDependencies({
     getIt
       ..unregister<FavoritesRepository>()
       ..registerSingleton<FavoritesRepository>(favorites);
+  }
+
+  if (onboarding != null) {
+    getIt
+      ..unregister<OnboardingRepository>()
+      ..registerSingleton<OnboardingRepository>(onboarding);
   }
   return fake;
 }

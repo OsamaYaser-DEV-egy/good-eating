@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:good_eating/app/app.dart';
+import 'package:good_eating/features/search/presentation/widgets/search_field.dart';
 
 import 'helpers/fake_meal_repository.dart';
 import 'helpers/test_dependencies.dart';
@@ -38,11 +39,23 @@ void main() {
 
     await tester.tap(find.bySemanticsLabel('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('Profile'), findsOneWidget);
+    expect(find.text('My profile'), findsOneWidget);
+
+    await tester.tap(find.bySemanticsLabel('Notifications'));
+    await tester.pumpAndSettle();
+    expect(find.text('Today'), findsOneWidget);
+
+    await tester.tap(find.bySemanticsLabel('Saved'));
+    await tester.pumpAndSettle();
+    expect(find.text('Saved recipes'), findsOneWidget);
 
     await tester.tap(find.bySemanticsLabel('Search'));
     await tester.pumpAndSettle();
-    expect(find.text('Search'), findsOneWidget);
+    expect(find.byType(SearchField), findsOneWidget);
+
+    await tester.tap(find.bySemanticsLabel('Home'));
+    await tester.pumpAndSettle();
+    expect(find.text('Popular category'), findsOneWidget);
   });
 
   testWidgets('Home keeps its state while another tab is showing', (
