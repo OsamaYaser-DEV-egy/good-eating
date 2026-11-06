@@ -98,11 +98,12 @@ calls on first load (categories plus three meal lists) and none when the tab is 
 - States: shimmer skeletons shaped like each carousel · `AppErrorView` with **Try again** · `AppEmptyView`.
 
 ### 5.2 Category meals — `CategoryMealsPage` *(the exam's grid)*
-- App bar with the category name and a back button.
-- The same category chip row pinned at the top, so switching categories refetches `filter.php` here too.
-- **2-column `GridView.builder`**, card = rounded image + name + heart + Hero tag.
-- Shimmer grid while loading, error + **Try again**, empty state.
-- Staggered fade/slide entrance; `AnimatedSwitcher` cross-fade when the category changes.
+The design has no frame for this screen, so it is assembled from existing pieces. Header: `ScreenHeader`, taken from the Recipe detail frame's header (`131:638`): 24 px back arrow 20 px in and 12 px down, then an h4 title (the category name).
+- The same `CategoryTabs` as Home, pinned under the header, so switching category refetches `filter.php` here too. The grid owns its own `CategoryMealsCubit`, so choosing a chip here never changes Home's selection.
+- **2-column `GridView.builder`** (`crossAxisCount: 2`, 16 px gaps, 20 px side padding). The cell is the Popular category card (`MealPopularCard`): round dish photo, name, cook time, heart. The card fills its cell, so it is 159.5 wide at 375 and 132 at 320. All meals in the category are shown, not the 10-card preview.
+- Shimmer grid while loading, a full-area error with **Try again**, and a friendly empty state. The header and chips stay during all three, so the user can always pick another category.
+- Only the first six cards stagger in; cards scrolled into view later appear at once. The meals area cross-fades when the category changes.
+- Opened from "See all" on Trending (categories[1]), Recent (categories[2]) and the Popular category header (the selected chip). A pushed route above the shell, so there is no bottom bar.
 
 ### 5.3 Meal details — `MealDetailsPage` (`131:561`)
 - Hero image continuing from whichever card was tapped; back button; **heart** in the app bar.

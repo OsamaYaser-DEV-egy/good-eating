@@ -47,6 +47,7 @@ class _SeeAllButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      container: true,
       button: true,
       label: 'See all',
       child: GestureDetector(

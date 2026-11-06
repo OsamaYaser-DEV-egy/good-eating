@@ -11,8 +11,12 @@ import 'package:good_eating/core/widgets/app_shimmer.dart';
 import 'package:good_eating/core/widgets/favorite_heart_button.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_summary.dart';
 
-/// The tall grey card in "Popular category": a round dish photo overlapping
-/// the top of a panel with the title, cook time and heart.
+/// The tall grey card used in "Popular category" and in the category grid: a
+/// round dish photo overlapping the top of a panel with the title, cook time
+/// and heart.
+///
+/// It fills the width it is given, so a carousel wraps it in a [carouselWidth]
+/// box and a grid lets each cell decide.
 ///
 /// The cook time is a placeholder (see `UiPlaceholders`).
 class MealPopularCard extends StatelessWidget {
@@ -29,7 +33,8 @@ class MealPopularCard extends StatelessWidget {
   final bool isFavorite;
   final VoidCallback? onFavoriteToggle;
 
-  static const double width = 150;
+  /// The card's width in the "Popular category" carousel.
+  static const double carouselWidth = 150;
   static const double height = 231;
 
   static const double _dishSize = 110;
@@ -50,7 +55,6 @@ class MealPopularCard extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: SizedBox(
-          width: width,
           height: height,
           child: Stack(
             children: [
@@ -160,7 +164,6 @@ class MealPopularCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
-      width: MealPopularCard.width,
       height: MealPopularCard.height,
       child: Stack(
         children: [

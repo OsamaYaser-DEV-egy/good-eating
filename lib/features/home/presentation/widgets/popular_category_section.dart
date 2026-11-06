@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:good_eating/core/state/data_state.dart';
 import 'package:good_eating/core/theme/app_spacing.dart';
 import 'package:good_eating/core/widgets/app_shimmer.dart';
 import 'package:good_eating/core/widgets/data_state_view.dart';
 import 'package:good_eating/core/widgets/entrance_animation.dart';
 import 'package:good_eating/core/widgets/horizontal_list.dart';
+import 'package:good_eating/features/category_meals/presentation/category_meals_navigation.dart';
 import 'package:good_eating/features/category_meals/presentation/cubit/category_meals_cubit.dart';
 import 'package:good_eating/features/category_meals/presentation/cubit/category_meals_state.dart';
+import 'package:good_eating/features/category_meals/presentation/widgets/category_tabs.dart';
 import 'package:good_eating/features/home/presentation/widgets/home_section.dart';
-import 'package:good_eating/features/meals/domain/entities/meal_category.dart';
-import 'package:good_eating/features/meals/presentation/cubit/categories_cubit.dart';
-import 'package:good_eating/features/meals/presentation/widgets/category_chips_row.dart';
 import 'package:good_eating/features/meals/presentation/widgets/meal_popular_card.dart';
 
 /// "Popular category": the category tabs and, under them, that category's
-/// meals. Tapping a tab selects it and loads its meals.
+/// meals. Tapping a tab selects it and loads its meals; "See all" opens the
+/// selected category as a grid.
 class PopularCategorySection extends StatelessWidget {
   const PopularCategorySection({super.key});
 
@@ -25,43 +24,21 @@ class PopularCategorySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const HomeSection(
-      title: 'Popular category',
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _CategoryTabs(),
-          SizedBox(height: AppSpacing.xl),
-          _CategoryMeals(),
-        ],
-      ),
-    );
-  }
-}
-
-class _CategoryTabs extends StatelessWidget {
-  const _CategoryTabs();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<CategoriesCubit, DataState<List<MealCategory>>>(
-      builder: (context, state) => DataStateView<List<MealCategory>>(
-        state: state,
-        onRetry: context.read<CategoriesCubit>().load,
-        loadingBuilder: (context) => const CategoryChipsSkeleton(),
-        builder: (context, categories) {
-          final selected = context.select<CategoryMealsCubit, String?>(
-            (cubit) => cubit.state.selected,
-          );
-          final cubit = context.read<CategoryMealsCubit>();
-          return CategoryChipsRow(
-            categories: categories,
-            selected: selected,
-            onSelected: (name) {
-              if (name != selected) cubit.select(name);
-            },
-          );
-        },
+    return BlocSelector<CategoryMealsCubit, CategoryMealsState, String?>(
+      selector: (state) => state.selected,
+      builder: (context, selected) => HomeSection(
+        title: 'Popular category',
+        onSeeAll: selected == null
+            ? null
+            : () => openCategoryMeals(context, selected),
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CategoryTabs(),
+            SizedBox(height: AppSpacing.xl),
+            _CategoryMeals(),
+          ],
+        ),
       ),
     );
   }
@@ -91,8 +68,10 @@ class _CategoryMeals extends StatelessWidget {
           return HorizontalList(
             height: MealPopularCard.height,
             itemCount: shown.length,
-            itemBuilder: (context, index) =>
-                MealPopularCard(meal: shown[index]).entrance(index: index),
+            itemBuilder: (context, index) => SizedBox(
+              width: MealPopularCard.carouselWidth,
+              child: MealPopularCard(meal: shown[index]),
+            ).entrance(index: index),
           );
         },
       ),
@@ -118,5 +97,8 @@ class _MealsSkeleton extends StatelessWidget {
   }
 
   static Widget _skeletonItem(BuildContext context, int index) =>
-      const MealPopularCardSkeleton();
+      const SizedBox(
+        width: MealPopularCard.carouselWidth,
+        child: MealPopularCardSkeleton(),
+      );
 }

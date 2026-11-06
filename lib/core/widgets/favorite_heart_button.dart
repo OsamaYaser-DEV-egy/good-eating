@@ -27,6 +27,7 @@ class FavoriteHeartButton extends StatelessWidget {
     final onPressed = this.onPressed;
 
     return Semantics(
+      container: true,
       button: onPressed != null,
       label: isFavorite ? 'Remove from favorites' : 'Add to favorites',
       child: GestureDetector(

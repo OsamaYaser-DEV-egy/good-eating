@@ -10,6 +10,7 @@ abstract final class AppAssets {
   static const String navProfile = '$_icons/nav_profile.svg';
   static const String search = '$_icons/search.svg';
   static const String arrowRight = '$_icons/arrow_right.svg';
+  static const String arrowLeft = '$_icons/arrow_left.svg';
   static const String playButton = '$_icons/play_button.svg';
   static const String star = '$_icons/star.svg';
   static const String more = '$_icons/more.svg';

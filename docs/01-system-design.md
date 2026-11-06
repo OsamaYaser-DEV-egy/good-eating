@@ -105,6 +105,7 @@ lib/
 │     ├─ app_bottom_nav_bar.dart   # custom notched nav bar (CustomPainter)
 │     ├─ primary_button.dart
 │     ├─ section_header.dart       # "Title ... See all →"
+│     ├─ screen_header.dart        # back arrow + large title for pushed screens
 │     └─ favorite_heart_button.dart # animated heart save toggle
 │
 └─ features/
@@ -119,7 +120,7 @@ lib/
    │  │  ├─ datasources/meal_remote_data_source.dart
    │  │  └─ repositories/meal_repository_impl.dart
    │  └─ presentation/widgets/     # cards reused across home / grid / search / favorites
-   │     ├─ meal_grid_card.dart
+   │     ├─ (the grid reuses meal_popular_card.dart, which fills its cell)
    │     ├─ meal_list_card.dart
    │     ├─ meal_trending_card.dart
    │     ├─ meal_popular_card.dart

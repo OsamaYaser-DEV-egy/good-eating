@@ -71,9 +71,10 @@ at 320 / 375 / 430 widths.
 
 ## Stage 3 — Category meals grid  *(the exam's `GridView.builder`)*
 
-- `CategoryMealsPage`: app bar with the category name, the chip row pinned at the top,
+- `CategoryMealsPage`: `ScreenHeader` (back arrow + category name), the chip row pinned at the top,
   **2-column `GridView.builder`** of `filter.php?c=<selected>`.
-- `MealGridCard` with `AppNetworkImage`, rounded corners, heart toggle, Hero tag.
+- The grid cell reuses `MealPopularCard` (made to fill its cell) rather than a separate card, so the
+  grid and the Popular carousel cannot drift apart. The Hero tag is added in Stage 4.
 - Shimmer grid, error + **Try again**, empty state.
 - `AnimatedSwitcher` cross-fade when the category changes; staggered item entrance.
 
