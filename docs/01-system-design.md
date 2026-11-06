@@ -244,9 +244,8 @@ final class DataFailure<T> extends DataState<T> { final Failure failure; }
 | Cubit | State | Owns |
 |---|---|---|
 | `CategoriesCubit` | `DataState<List<MealCategory>>` | categories.php, cached in memory after first success |
-| `SelectedCategoryCubit` | `String?` | the active category name, drives the chip highlight |
-| `CategoryMealsCubit` | `DataState<List<MealSummary>>` | filter.php for the selected category |
-| `HomeFeedCubit` | `DataState<HomeFeed>` | the Trending and Recent carousels, off the shared category cache |
+| `CategoryMealsCubit` | `CategoryMealsState` (`selected` + `DataState<List<MealSummary>>`) | the active category and its meals; a chip highlights at once while the meals load, and a slow answer for a category no longer selected is discarded. One instance per screen: Home has one, the grid page will have its own |
+| `HomeFeedCubit` | `DataState<HomeFeed>` | the Trending and Recent carousels (categories 1 and 2) |
 | `MealDetailsCubit` | `DataState<MealDetail>` | lookup.php for one id |
 | `SearchCubit` | sealed `SearchState`: Idle / Loading / Results / Empty / Error | debounced search.php |
 | `FavoritesCubit` | `DataState<List<MealSummary>>` | local storage, exposes `toggle(meal)` and `isFavorite(id)` |
@@ -255,8 +254,12 @@ final class DataFailure<T> extends DataState<T> { final Failure failure; }
 
 Rules:
 
-- One Cubit, one responsibility. Category **selection** is separate from category **meals**, so tapping
-  a chip highlights instantly while the grid runs its own loading state.
+- One Cubit, one responsibility. Category **selection** and category **meals** live in one state
+  (`CategoryMealsState`) so they can never disagree: the chip highlights the instant it is tapped
+  while the meals underneath run their own loading state. `CategoriesCubit` is provided above the
+  navigator in `App`, so pushed screens read the same list as the shell.
+- If the categories fail to load nothing else can, so Home swaps its sections for one error with one
+  "Try again" instead of four; failures of a single meal list stay inline in their own section.
 - `FavoritesCubit` is a single app-scoped instance (a `lazySingleton` provided above the shell), so the
   heart on the details page, the heart on every card, the favorites tab, and the Profile saved-count
   all read one list — no manual refresh, no duplicated storage reads.

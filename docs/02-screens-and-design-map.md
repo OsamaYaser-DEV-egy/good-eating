@@ -73,13 +73,14 @@ concept, so each carousel is backed by a real endpoint with a documented, determ
 
 | Section | Data |
 |---|---|
-| Trending now | `filter.php?c=<categories[0]>`, first 5 meals |
+| Trending now | `filter.php?c=<categories[1]>`, first 5 meals |
 | Popular category | `filter.php?c=<selected chip>`, first 10 meals — this is the live, interactive one |
-| Recent recipe | `filter.php?c=<categories[1]>`, first 5 meals |
-| Popular creators | `UiPlaceholders.creator` pool + avatars exported from the design |
+| Recent recipe | `filter.php?c=<categories[2]>`, first 5 meals |
+| Popular creators | `UiPlaceholders.allCreators` — the four portraits exported from the design |
 
-Trending and Recent share the category-meals cache, so Home makes at most three network calls on
-first load and zero on tab re-entry.
+Trending and Recent deliberately skip `categories[0]`, which the chips open on, so the same meals
+are not shown twice on first load. The repository caches every response, so Home makes four network
+calls on first load (categories plus three meal lists) and none when the tab is revisited.
 
 ---
 
@@ -89,10 +90,11 @@ first load and zero on tab re-entry.
 - Heading "Find best recipes for cooking" (`h4Bold`, Neutral/90), status-bar safe.
 - Search field rendered as a tappable field that switches to Search (matches the design, which is a button here).
 - **Trending now 🔥** + See all → horizontal 280×254 cards: image, play overlay, rating badge, heart, video length, title, creator row.
-- **Popular category** → the exam's `ListView.builder` of `categories.php` chips with the selected state (filled `Primary/50`, white text) + horizontal 150×231 cards showing image, name, cook time, heart.
+- **Popular category** → the exam's `ListView.builder` of `categories.php` chips with the selected state (filled `Primary/50`, white text) + horizontal 150×231 cards showing image, name, cook time, heart. **Tapping a chip selects it in place and swaps the cards**, exactly as the design's tabs do; the grid is reached through "See all".
+- **Popular category header** also gets a "See all", which the design does not draw, so the grid can be opened for whichever chip is selected.
 - **Recent recipe** + See all → horizontal 124×191 cards.
 - **Popular creators** + See all → circular avatars with names.
-- Every "See all" and every chip opens `CategoryMealsPage`.
+- Every "See all" opens `CategoryMealsPage` (wired in Stage 3; the buttons are hidden until then, so Home never shows a control that does nothing). The creators row has no "See all" at all, because there is no creators page to open.
 - States: shimmer skeletons shaped like each carousel · `AppErrorView` with **Try again** · `AppEmptyView`.
 
 ### 5.2 Category meals — `CategoryMealsPage` *(the exam's grid)*

@@ -46,10 +46,14 @@ class AppBottomNavBar extends StatelessWidget {
   /// Horizontal space reserved for the notch between the two slot groups.
   static const double _centerGap = 79;
 
+  /// The bar's total height including the system gesture inset. Scrolling
+  /// screens pad their bottom by this much so content is never hidden.
+  static double heightOf(BuildContext context) =>
+      overhang + _barContentHeight + MediaQuery.paddingOf(context).bottom;
+
   @override
   Widget build(BuildContext context) {
-    final bottomInset = MediaQuery.paddingOf(context).bottom;
-    final barHeight = _barContentHeight + bottomInset;
+    final barHeight = heightOf(context) - overhang;
 
     final slots = [
       for (var i = 0; i < items.length; i++)

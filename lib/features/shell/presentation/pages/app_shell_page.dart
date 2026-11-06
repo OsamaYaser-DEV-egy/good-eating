@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:good_eating/features/home/presentation/pages/home_page.dart';
 import 'package:good_eating/features/shell/presentation/cubit/shell_cubit.dart';
 import 'package:good_eating/features/shell/presentation/cubit/shell_tab.dart';
 import 'package:good_eating/features/shell/presentation/widgets/shell_bottom_bar.dart';
@@ -15,7 +16,7 @@ class AppShellPage extends StatelessWidget {
 
   /// Order must match [ShellTab.values].
   static const List<Widget> _tabs = [
-    ShellPlaceholderTab(title: 'Home'),
+    HomePage(),
     ShellPlaceholderTab(title: 'Saved'),
     ShellPlaceholderTab(title: 'Search'),
     ShellPlaceholderTab(title: 'Notifications'),

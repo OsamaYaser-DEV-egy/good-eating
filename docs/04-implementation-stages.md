@@ -58,7 +58,8 @@ centre button routes to the Search tab, and `flutter analyze` is silent.
   **Popular category** (the exam's category chips + cards), **Recent recipe**, **Popular creators**.
 - Reusable cards: `MealTrendingCard`, `MealPopularCard`, `MealRecentCard`, `CreatorAvatar`, `CategoryChip`.
 - `UiPlaceholders` supplies rating, review count, cook time, video length and creators.
-- Every "See all" and every chip routes to `CategoryMealsPage`.
+- "See all" on Trending, Recent and the Popular category header routes to `CategoryMealsPage`
+  (hidden until that page exists); tapping a chip selects it in place.
 - Per-section shimmer skeletons, `AppErrorView` + **Try again**, `AppEmptyView`.
 - Staggered entrance animations.
 

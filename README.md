@@ -50,7 +50,7 @@ LIVE_API=1 flutter test test/live
 
 - [x] **Stage 0**: foundation (theme, core, DI, router, custom notched nav bar)
 - [x] **Stage 1**: meals domain and data layer
-- [ ] Stage 2: Home
+- [x] **Stage 2**: Home
 - [ ] Stage 3: category meals grid
 - [ ] Stage 4: meal details
 - [ ] Stage 5: favorites

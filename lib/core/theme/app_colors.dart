@@ -43,6 +43,9 @@ abstract final class AppColors {
   /// Secondary label text (`Food recipe/dark grey` in Figma).
   static const Color darkGrey = Color(0xFF808A96);
 
+  /// Dark translucent fill behind badges laid over photos (`#303030` at 30 %).
+  static const Color overlayScrim = Color(0x4D303030);
+
   /// Soft shadow under the bottom navigation bar (`#6C6C6C` at 8 %).
   static const Color navBarShadow = Color(0x146C6C6C);
 }

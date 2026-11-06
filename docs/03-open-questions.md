@@ -18,12 +18,17 @@ carousels and no grid.
 columns, and a grader who only opens Home would not see it. So:
 
 1. The **category chips on Home are the real thing** — `ListView.builder` over `categories.php`, with
-   the selected state and the first category selected by default. That half of exam §5.1 stays on Home.
-2. Tapping **any** chip, any "See all", or the *Popular category* header opens the grid screen —
-   several obvious routes to it, not one.
+   the selected state and the first category selected by default. **Tapping a chip selects it in
+   place and reloads the cards below it** (as the design's tabs do), so exam §5.1's "switch category
+   smoothly" is visible on Home itself.
+2. "See all" on Trending, Recent and the *Popular category* header opens the grid screen.
 3. The grid screen carries the same chips at the top, so switching categories there hits
    `filter.php` exactly as the exam describes.
 4. The README's rubric map points at the grid screen by file and line.
+
+*Changed in Stage 2:* an earlier draft said every chip tap would open the grid. Selecting in place is
+what the design shows and keeps the exam's selected-state behaviour on the first screen, so chips now
+select and "See all" navigates.
 
 ## Q2 — Fields the API does not return  ·  **DECIDED: derived placeholders**
 

@@ -5,8 +5,9 @@ import 'package:good_eating/core/theme/app_colors.dart';
 /// Poppins type scale from the Figma `Styles` page.
 ///
 /// Figma's "bold" style is Poppins SemiBold (600), so that is what `*Bold`
-/// maps to here. Small and tiny styles use a line height of 1.0, matching the
-/// 100 % set in the design.
+/// maps to here. Small and tiny styles leave `height` unset, because the
+/// design lays them out with "normal" leading (about 1.5 for Poppins): a
+/// 12 px label with 8 px padding above and below is 34 px tall, not 28.
 abstract final class AppTextStyles {
   static const String fontFamily = 'Poppins';
 
@@ -62,7 +63,6 @@ abstract final class AppTextStyles {
     fontFamily: fontFamily,
     fontSize: 12,
     fontWeight: FontWeight.w600,
-    height: 1,
     color: AppColors.neutral90,
   );
 
@@ -70,7 +70,6 @@ abstract final class AppTextStyles {
     fontFamily: fontFamily,
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    height: 1,
     color: AppColors.neutral90,
   );
 
@@ -78,7 +77,6 @@ abstract final class AppTextStyles {
     fontFamily: fontFamily,
     fontSize: 10,
     fontWeight: FontWeight.w400,
-    height: 1,
     color: AppColors.neutral90,
   );
 }
