@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -5,6 +7,7 @@ import 'package:good_eating/core/constants/app_assets.dart';
 import 'package:good_eating/core/theme/app_radii.dart';
 import 'package:good_eating/core/theme/app_spacing.dart';
 import 'package:good_eating/core/theme/app_text_styles.dart';
+import 'package:good_eating/core/utils/text_scaling.dart';
 import 'package:good_eating/core/utils/ui_placeholders.dart';
 import 'package:good_eating/core/widgets/app_network_image.dart';
 import 'package:good_eating/core/widgets/app_shimmer.dart';
@@ -44,8 +47,21 @@ class MealTrendingCard extends StatelessWidget {
 
   /// The card's width in the "Trending now" carousel.
   static const double carouselWidth = 280;
-  static const double height = 254;
   static const double imageHeight = 180;
+
+  /// The text parts of the card's height, which grow with the text size.
+  static const double _titleLine = 16 * 1.4;
+  static const double _creatorLine = 12 * 1.5;
+
+  /// The card's height: about 254 at the default text size, taller for larger
+  /// text. The portrait beside the creator's name is 32 px, so it sets that
+  /// row's height until the text outgrows it.
+  static double heightOf(BuildContext context) =>
+      imageHeight +
+      AppSpacing.md +
+      context.scaled(_titleLine) +
+      AppSpacing.sm +
+      math.max(CreatorLine.avatarSize, context.scaled(_creatorLine));
 
   /// Inset of the badges from the photo's edges.
   static const double _badgeInset = AppSpacing.sm;

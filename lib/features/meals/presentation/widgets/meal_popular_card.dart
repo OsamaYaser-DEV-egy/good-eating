@@ -5,6 +5,7 @@ import 'package:good_eating/core/theme/app_radii.dart';
 import 'package:good_eating/core/theme/app_spacing.dart';
 import 'package:good_eating/core/theme/app_text_styles.dart';
 import 'package:good_eating/core/utils/formatters.dart';
+import 'package:good_eating/core/utils/text_scaling.dart';
 import 'package:good_eating/core/utils/ui_placeholders.dart';
 import 'package:good_eating/core/widgets/app_network_image.dart';
 import 'package:good_eating/core/widgets/app_shimmer.dart';
@@ -36,16 +37,35 @@ class MealPopularCard extends StatelessWidget {
 
   /// The card's width in the "Popular category" carousel.
   static const double carouselWidth = 150;
-  static const double height = 231;
 
   static const double _dishSize = 110;
 
   /// The grey panel starts halfway down the dish, so the photo overlaps it.
   static const double _panelTop = 55;
-  static const double _titleTop = height - _dishSize;
+
+  /// The title starts 11 px below the dish, 121 px from the card's top.
+  static const double _titleTop = _dishSize + 11;
   static const double _panelPadding = AppSpacing.md;
   static const double _titleInset = AppSpacing.sm;
   static const double _heartSize = 24;
+
+  /// The text parts of the card's height, which grow with the text size.
+  static const double _titleLines = 14 * 1.4 * 2;
+  static const double _timeLine = 12 * 1.5;
+  static const double _timeGap = AppSpacing.xs;
+
+  /// Space between the title and the time block at the default text size.
+  static const double _titleToTime = 18.8;
+
+  /// The card's height: 231 at the default text size, taller for larger text
+  /// so the title and the time never run into each other or off the card.
+  static double heightOf(BuildContext context) =>
+      _titleTop +
+      context.scaled(_titleLines) +
+      _titleToTime +
+      2 * context.scaled(_timeLine) +
+      _timeGap +
+      _panelPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +76,7 @@ class MealPopularCard extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: SizedBox(
-          height: height,
+          height: heightOf(context),
           child: Stack(
             children: [
               const Positioned(
@@ -165,9 +185,9 @@ class MealPopularCardSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      height: MealPopularCard.height,
-      child: Stack(
+    return SizedBox(
+      height: MealPopularCard.heightOf(context),
+      child: const Stack(
         children: [
           Positioned(
             top: MealPopularCard._panelTop,

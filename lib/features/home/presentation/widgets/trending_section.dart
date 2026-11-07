@@ -44,13 +44,13 @@ class TrendingSection extends StatelessWidget {
             builder: (context, feed) {
               final meals = feed.trending.meals;
               if (meals.isEmpty) {
-                return const SectionEmpty(
-                  height: MealTrendingCard.height,
+                return SectionEmpty(
+                  height: MealTrendingCard.heightOf(context),
                   message: 'No trending recipes right now',
                 );
               }
               return HorizontalList(
-                height: MealTrendingCard.height,
+                height: MealTrendingCard.heightOf(context),
                 itemCount: meals.length,
                 itemBuilder: (context, index) {
                   final meal = meals[index];
@@ -87,11 +87,11 @@ class _TrendingSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AppShimmer(
+    return AppShimmer(
       child: HorizontalList(
-        height: MealTrendingCard.height,
+        height: MealTrendingCard.heightOf(context),
         itemCount: _count,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: _skeletonItem,
       ),
     );

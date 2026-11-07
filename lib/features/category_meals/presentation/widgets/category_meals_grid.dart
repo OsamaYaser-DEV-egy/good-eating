@@ -8,12 +8,13 @@ import 'package:good_eating/features/meals/presentation/hero_tags.dart';
 import 'package:good_eating/features/meals/presentation/widgets/meal_popular_card.dart';
 
 /// Two columns, 16 px apart, with every cell as tall as a popular card.
-const SliverGridDelegate _delegate = SliverGridDelegateWithFixedCrossAxisCount(
-  crossAxisCount: CategoryMealsGrid.columns,
-  crossAxisSpacing: AppSpacing.lg,
-  mainAxisSpacing: AppSpacing.lg,
-  mainAxisExtent: MealPopularCard.height,
-);
+SliverGridDelegate _delegate(BuildContext context) =>
+    SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: CategoryMealsGrid.columns,
+      crossAxisSpacing: AppSpacing.lg,
+      mainAxisSpacing: AppSpacing.lg,
+      mainAxisExtent: MealPopularCard.heightOf(context),
+    );
 
 EdgeInsets _padding(BuildContext context) => EdgeInsets.fromLTRB(
   AppSpacing.screenHorizontal,
@@ -39,7 +40,7 @@ class CategoryMealsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       padding: _padding(context),
-      gridDelegate: _delegate,
+      gridDelegate: _delegate(context),
       itemCount: meals.length,
       itemBuilder: (context, index) {
         final meal = meals[index];
@@ -68,7 +69,7 @@ class CategoryMealsGridSkeleton extends StatelessWidget {
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         padding: _padding(context),
-        gridDelegate: _delegate,
+        gridDelegate: _delegate(context),
         itemCount: _count,
         itemBuilder: (context, index) => const MealPopularCardSkeleton(),
       ),

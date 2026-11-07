@@ -59,8 +59,8 @@ class _CategoryMeals extends StatelessWidget {
         loadingBuilder: (context) => const _MealsSkeleton(),
         builder: (context, meals) {
           if (meals.isEmpty) {
-            return const SectionEmpty(
-              height: MealPopularCard.height,
+            return SectionEmpty(
+              height: MealPopularCard.heightOf(context),
               message: 'No recipes in this category yet',
             );
           }
@@ -68,7 +68,7 @@ class _CategoryMeals extends StatelessWidget {
               .take(PopularCategorySection.previewSize)
               .toList(growable: false);
           return HorizontalList(
-            height: MealPopularCard.height,
+            height: MealPopularCard.heightOf(context),
             itemCount: shown.length,
             itemBuilder: (context, index) {
               final meal = shown[index];
@@ -100,11 +100,11 @@ class _MealsSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AppShimmer(
+    return AppShimmer(
       child: HorizontalList(
-        height: MealPopularCard.height,
+        height: MealPopularCard.heightOf(context),
         itemCount: _count,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: _skeletonItem,
       ),
     );

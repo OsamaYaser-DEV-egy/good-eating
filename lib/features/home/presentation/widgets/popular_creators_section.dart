@@ -20,7 +20,7 @@ class PopularCreatorsSection extends StatelessWidget {
     return HomeSection(
       title: 'Popular creators',
       child: HorizontalList(
-        height: CreatorAvatarItem.height,
+        height: CreatorAvatarItem.heightOf(context),
         itemCount: creators.length,
         itemBuilder: (context, index) =>
             CreatorAvatarItem(creator: creators[index]).entrance(index: index),

@@ -16,6 +16,10 @@ class ProfileStats extends StatelessWidget {
   /// The number of saved meals, or a dash while that is not known yet.
   final String recipeCount;
 
+  /// The largest text size the row grows to. All four labels fit at this size
+  /// on the narrowest phone.
+  static const double _maxTextScale = 1.3;
+
   @override
   Widget build(BuildContext context) {
     const profile = UiPlaceholders.profile;
@@ -29,14 +33,19 @@ class ProfileStats extends StatelessWidget {
             AppSpacing.screenHorizontal,
             0,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _Stat(label: 'Recipe', value: recipeCount),
-              _Stat(label: 'Videos', value: profile.videoCount),
-              _Stat(label: 'Followers', value: profile.followerCount),
-              _Stat(label: 'Following', value: profile.followingCount),
-            ],
+          // Four labels share one row, so the text size is capped: at the
+          // largest system sizes they cannot all fit side by side.
+          child: MediaQuery.withClampedTextScaling(
+            maxScaleFactor: _maxTextScale,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _Stat(label: 'Recipe', value: recipeCount),
+                _Stat(label: 'Videos', value: profile.videoCount),
+                _Stat(label: 'Followers', value: profile.followerCount),
+                _Stat(label: 'Following', value: profile.followingCount),
+              ],
+            ),
           ),
         ),
         const SizedBox(height: AppSpacing.xl),

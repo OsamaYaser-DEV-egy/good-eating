@@ -4,6 +4,7 @@ import 'package:good_eating/core/theme/app_colors.dart';
 import 'package:good_eating/core/theme/app_radii.dart';
 import 'package:good_eating/core/theme/app_spacing.dart';
 import 'package:good_eating/core/theme/app_text_styles.dart';
+import 'package:good_eating/core/utils/text_scaling.dart';
 import 'package:good_eating/core/utils/ui_placeholders.dart';
 import 'package:good_eating/core/widgets/app_network_image.dart';
 import 'package:good_eating/core/widgets/app_shimmer.dart';
@@ -29,11 +30,22 @@ class MealRecentCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   static const double width = 124;
-  static const double height = 191;
 
   /// The title always reserves two lines (14 px at 1.4), so every card's
   /// creator line sits at the same height.
-  static const double _titleHeight = 14 * 1.4 * 2;
+  static const double _titleLines = 14 * 1.4 * 2;
+
+  /// One line of the 10 px "By creator" text at its natural height.
+  static const double _creatorLine = 10 * 1.5;
+
+  /// The card's height: about 191 at the default text size, taller for larger
+  /// text.
+  static double heightOf(BuildContext context) =>
+      width +
+      AppSpacing.sm +
+      context.scaled(_titleLines) +
+      AppSpacing.xs +
+      context.scaled(_creatorLine);
 
   /// Text is inset slightly from the photo's edge in the design.
   static const double _textInset = AppSpacing.xs;
@@ -65,7 +77,7 @@ class MealRecentCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: _textInset),
                 child: SizedBox(
-                  height: _titleHeight,
+                  height: context.scaled(_titleLines),
                   child: Text(
                     meal.name,
                     maxLines: 2,

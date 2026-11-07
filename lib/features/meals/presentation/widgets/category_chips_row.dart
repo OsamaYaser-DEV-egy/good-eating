@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:good_eating/core/theme/app_spacing.dart';
+import 'package:good_eating/core/utils/text_scaling.dart';
 import 'package:good_eating/core/widgets/app_shimmer.dart';
 import 'package:good_eating/features/meals/domain/entities/meal_category.dart';
 import 'package:good_eating/features/meals/presentation/widgets/category_chip.dart';
@@ -20,14 +21,18 @@ class CategoryChipsRow extends StatelessWidget {
   final String? selected;
   final ValueChanged<String> onSelected;
 
-  /// Height of a chip: 12 px text at its natural line height plus 8 px of
-  /// padding above and below.
-  static const double height = 34;
+  /// One line of the 12 px label at its natural height.
+  static const double _labelLine = 12 * 1.5;
+
+  /// Height of a chip: the label plus 8 px of padding above and below. That is
+  /// 34 at the default text size and more for larger text.
+  static double heightOf(BuildContext context) =>
+      2 * AppSpacing.sm + context.scaled(_labelLine);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height,
+      height: heightOf(context),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: AppSpacing.screenPadding,
@@ -57,9 +62,11 @@ class CategoryChipsSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = CategoryChipsRow.heightOf(context);
+
     return AppShimmer(
       child: SizedBox(
-        height: CategoryChipsRow.height,
+        height: height,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           physics: const NeverScrollableScrollPhysics(),
@@ -67,10 +74,7 @@ class CategoryChipsSkeleton extends StatelessWidget {
           itemCount: _widths.length,
           itemBuilder: (context, index) => Padding(
             padding: const EdgeInsets.only(right: AppSpacing.sm),
-            child: ShimmerBox(
-              width: _widths[index],
-              height: CategoryChipsRow.height,
-            ),
+            child: ShimmerBox(width: _widths[index], height: height),
           ),
         ),
       ),

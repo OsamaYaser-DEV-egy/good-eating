@@ -26,6 +26,10 @@ void main() {
   final enabled = Platform.environment['LIVE_API'] == '1';
   final skip = enabled ? false : 'Set LIVE_API=1 to run against the real API.';
 
+  // `flutter_test` replaces the HTTP client with one that answers every request
+  // with 400, so it would never reach the real server. Restore the real one.
+  setUpAll(() => HttpOverrides.global = null);
+
   late MealRepositoryImpl repository;
 
   setUp(() {

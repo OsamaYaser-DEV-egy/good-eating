@@ -41,13 +41,13 @@ class CreatorLine extends StatelessWidget {
 
   final PlaceholderCreator creator;
 
-  static const double _avatarSize = 32;
+  static const double avatarSize = 32;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CreatorAvatar(creator: creator, diameter: _avatarSize),
+        CreatorAvatar(creator: creator, diameter: avatarSize),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(

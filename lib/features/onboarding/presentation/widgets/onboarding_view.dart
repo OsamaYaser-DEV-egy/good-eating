@@ -46,45 +46,58 @@ class OnboardingView extends StatelessWidget {
             children: [
               const OnboardingBackground(),
               SafeArea(
-                child: Padding(
-                  padding: AppSpacing.screenPadding,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: AppSpacing.lg),
-                      const _PremiumLine(),
-                      const Spacer(),
-                      Text(
-                        _headline,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.displayBold.copyWith(
-                          color: AppColors.white,
-                        ),
+                // The content is centred on a tall screen and scrolls on a
+                // short one, or when the text size is large.
+                child: LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    padding: AppSpacing.screenPadding,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
                       ),
-                      const SizedBox(height: _afterHeadline),
-                      Text(
-                        _subtitle,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.labelRegular.copyWith(
-                          color: AppColors.white,
-                        ),
-                      ),
-                      const SizedBox(height: _afterSubtitle),
-                      SizedBox(
-                        width: _buttonWidth,
-                        child: PrimaryButton(
-                          label: 'Start cooking',
-                          icon: SvgPicture.asset(
-                            AppAssets.arrowRight,
-                            colorFilter: const ColorFilter.mode(
-                              AppColors.white,
-                              BlendMode.srcIn,
+                      child: IntrinsicHeight(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: AppSpacing.lg),
+                            const _PremiumLine(),
+                            const Spacer(),
+                            Text(
+                              _headline,
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.displayBold.copyWith(
+                                color: AppColors.white,
+                              ),
                             ),
-                          ),
-                          onPressed: context.read<OnboardingCubit>().start,
+                            const SizedBox(height: _afterHeadline),
+                            Text(
+                              _subtitle,
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.labelRegular.copyWith(
+                                color: AppColors.white,
+                              ),
+                            ),
+                            const SizedBox(height: _afterSubtitle),
+                            SizedBox(
+                              width: _buttonWidth,
+                              child: PrimaryButton(
+                                label: 'Start cooking',
+                                icon: SvgPicture.asset(
+                                  AppAssets.arrowRight,
+                                  colorFilter: const ColorFilter.mode(
+                                    AppColors.white,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                                onPressed: context
+                                    .read<OnboardingCubit>()
+                                    .start,
+                              ),
+                            ),
+                            const SizedBox(height: _bottomGap),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: _bottomGap),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -102,24 +115,31 @@ class _PremiumLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SvgPicture.asset(AppAssets.star),
-        const SizedBox(width: AppSpacing.sm),
-        Text.rich(
-          TextSpan(
-            style: AppTextStyles.labelRegular.copyWith(color: AppColors.white),
-            children: [
-              TextSpan(
-                text: '60k+',
-                style: AppTextStyles.labelBold.copyWith(color: AppColors.white),
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset(AppAssets.star),
+          const SizedBox(width: AppSpacing.sm),
+          Text.rich(
+            TextSpan(
+              style: AppTextStyles.labelRegular.copyWith(
+                color: AppColors.white,
               ),
-              const TextSpan(text: ' Premium recipes'),
-            ],
+              children: [
+                TextSpan(
+                  text: '60k+',
+                  style: AppTextStyles.labelBold.copyWith(
+                    color: AppColors.white,
+                  ),
+                ),
+                const TextSpan(text: ' Premium recipes'),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -27,5 +27,5 @@ abstract final class AppAssets {
   /// The full-bleed photo behind the onboarding screen. It is optional: the
   /// design's photo is a raw image that could not be exported, so until a
   /// file is placed here the screen shows a dark gradient instead.
-  static const String onboardingPhoto = '$_images/onboarding.jpg';
+  static const String onboardingPhoto = '$_images/Background.png';
 }

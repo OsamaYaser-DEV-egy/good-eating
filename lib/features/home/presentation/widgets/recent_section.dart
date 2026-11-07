@@ -44,13 +44,13 @@ class RecentSection extends StatelessWidget {
             builder: (context, feed) {
               final meals = feed.recent.meals;
               if (meals.isEmpty) {
-                return const SectionEmpty(
-                  height: MealRecentCard.height,
+                return SectionEmpty(
+                  height: MealRecentCard.heightOf(context),
                   message: 'No recent recipes yet',
                 );
               }
               return HorizontalList(
-                height: MealRecentCard.height,
+                height: MealRecentCard.heightOf(context),
                 itemCount: meals.length,
                 itemBuilder: (context, index) {
                   final meal = meals[index];
@@ -81,11 +81,11 @@ class _RecentSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AppShimmer(
+    return AppShimmer(
       child: HorizontalList(
-        height: MealRecentCard.height,
+        height: MealRecentCard.heightOf(context),
         itemCount: _count,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: _skeletonItem,
       ),
     );
